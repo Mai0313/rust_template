@@ -1,19 +1,22 @@
-ARG PYTHON_VERSION=3.10
-FROM nikolaik/python-nodejs:python${PYTHON_VERSION}-nodejs20 AS builder
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+FROM mcr.microsoft.com/devcontainers/rust:1-1-bookworm
 
 LABEL maintainer="Wei Lee <mai@mai0313.com>" \
-    org.label-schema.name="repo_template" \
-    org.label-schema.vendor="Wei Lee" \
-    org.label-schema.schema-version="1.0" \
-    com.centurylinklabs.watchtower.stop-signal="SIGINT"
+      org.label-schema.name="rust_template" \
+      org.label-schema.vendor="Wei Lee" \
+      org.label-schema.schema-version="1.0" \
+      com.centurylinklabs.watchtower.stop-signal="SIGINT"
 
-# Install python packages
+# Optional: Git SSL verify disabled to match workflows (keep per request)
 RUN git config --global http.sslVerify false
+
+# Install common build tooling for Rust native deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential pkg-config cmake clang lld && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Fonts for zsh p10k
 # 1. 安裝 zsh vim wget 和 fontconfig
-RUN apt-get update && apt-get install -y zsh vim wget fontconfig && \
+RUN apt-get update && apt-get install -y zsh vim wget curl fontconfig && \
     mkdir -p "/usr/local/share/fonts/meslo" && \
     wget -O "/usr/local/share/fonts/meslo/MesloLGS NF Regular.ttf" "https://github.com/romkatv/dotfiles-public/raw/master/.local/share/fonts/NerdFonts/MesloLGS%20NF%20Regular.ttf" && \
     wget -O "/usr/local/share/fonts/meslo/MesloLGS NF Bold.ttf" "https://github.com/romkatv/dotfiles-public/raw/master/.local/share/fonts/NerdFonts/MesloLGS%20NF%20Bold.ttf" && \
@@ -21,8 +24,8 @@ RUN apt-get update && apt-get install -y zsh vim wget fontconfig && \
     wget -O "/usr/local/share/fonts/meslo/MesloLGS NF Bold Italic.ttf" "https://github.com/romkatv/dotfiles-public/raw/master/.local/share/fonts/NerdFonts/MesloLGS%20NF%20Bold%20Italic.ttf" && \
     fc-cache -fv
 
-# 安裝 oh-my-zsh
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# 安裝 oh-my-zsh（非互動）
+RUN bash -lc 'yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true'
 
 # 安裝 powerlevel10k theme
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k

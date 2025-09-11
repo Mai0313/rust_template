@@ -1,6 +1,6 @@
 # 🏷️ Auto Labeler Configuration
 # 這個檔案會自動為 PR 添加標籤，基於分支名稱和檔案變更路徑
-# 設計來支援 Python 和 TypeScript 專案，與 release-drafter.yml 完全對應
+# 設計來支援 Rust 專案，與 release-drafter.yml 完全對應
 
 # 主要標籤會被 release-drafter.yml 用於：
 # 1. 自動分類到對應的 changelog 區段
@@ -26,12 +26,9 @@ feature:
       - "^add/.*"
   - changed-files:
       - any-glob-to-any-file:
-          - "src/**/*.py"
-          - "src/**/*.ts"
-          - "src/**/*.js"
-          - "lib/**/*.py"
-          - "lib/**/*.ts"
-          - "lib/**/*.js"
+          - "src/**/*.rs"
+          - "lib/**/*.rs"
+          - "build.rs"
 
 # 🐛 Bug Fixes
 bugfix:
@@ -51,10 +48,16 @@ chore:
   - changed-files:
       - any-glob-to-any-file:
           - ".github/**"
-          - ".pre-commit-config.yaml"
-          - "pyproject.toml"
-          - "setup.py"
           - "Makefile"
+          - "Dockerfile"
+          - "docker/**"
+          - ".devcontainer/**"
+          - ".editorconfig"
+          - "rust-toolchain*"
+          - "rustfmt.toml"
+          - ".rustfmt.toml"
+          - "clippy.toml"
+          - "Clippy.toml"
 
 # 📦 Dependencies
 dependencies:
@@ -65,17 +68,8 @@ dependencies:
       - "^dependabot/.*"
   - changed-files:
       - any-glob-to-any-file:
-          - "requirements*.txt"
-          - "pyproject.toml"
-          - "setup.py"
-          - "setup.cfg"
-          - "Pipfile*"
-          - "poetry.lock"
-          - "uv.lock"
-          - "package.json"
-          - "package-lock.json"
-          - "yarn.lock"
-          - "pnpm-lock.yaml"
+          - "Cargo.toml"
+          - "Cargo.lock"
 
 # 📝 Documentation
 documentation:
@@ -102,22 +96,8 @@ unit-test:
       - "^tests/.*"
   - changed-files:
       - any-glob-to-any-file:
-          - "tests/**/*.py"
-          - "test/**/*.py"
-          - "**/test_*.py"
-          - "**/*_test.py"
-          - "**/*test*.py"
-          - "**/*spec*.py"
-          - "tests/**/*.ts"
-          - "test/**/*.ts"
-          - "**/*.test.ts"
-          - "**/*.spec.ts"
-          - "**/*.test.js"
-          - "**/*.spec.js"
-          - "jest.config.*"
-          - "vitest.config.*"
-          - "pytest.ini"
-          - "conftest.py"
+          - "tests/**/*.rs"
+          - "examples/**/*.rs"
 
 # ⚡️ Performance Improvements
 perf:
@@ -127,26 +107,13 @@ perf:
       - "^optimize/.*"
   - changed-files:
       - any-glob-to-any-file:
-          - "**/*perf*.py"
-          - "**/*benchmark*.py"
-          - "**/*performance*.py"
-          - "**/*perf*.ts"
-          - "**/*benchmark*.ts"
-          - "**/*performance*.ts"
+          - "benches/**/*.rs"
 
 # 🔒️ Security Fixes
 security:
   - head-branch:
       - "^security/.*"
       - "^sec/.*"
-  - changed-files:
-      - any-glob-to-any-file:
-          - "**/*security*.py"
-          - "**/*auth*.py"
-          - "**/*credential*.py"
-          - "**/*security*.ts"
-          - "**/*auth*.ts"
-          - "**/*credential*.ts"
 
 # ♻️ Code Refactoring
 refactor:
@@ -163,21 +130,11 @@ style:
       - "^lint/.*"
   - changed-files:
       - any-glob-to-any-file:
-          - ".pre-commit-config.yaml"
-          - ".ruff.toml"
-          - "ruff.toml"
-          - ".black"
-          - ".flake8"
-          - ".isort.cfg"
-          - ".mypy.ini"
-          - "mypy.ini"
-          - ".pylintrc"
-          - ".eslintrc*"
-          - ".prettier*"
-          - "stylelint*"
-          - "**/*.css"
-          - "**/*.scss"
-          - "**/*.sass"
+          - "rustfmt.toml"
+          - ".rustfmt.toml"
+          - "clippy.toml"
+          - "Clippy.toml"
+          - ".editorconfig"
 
 # 🔙 Reverts
 revert:

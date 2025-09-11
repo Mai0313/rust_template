@@ -1,0 +1,100 @@
+name: Build Release Artifacts
+
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+
+permissions: write-all
+
+jobs:
+  build_cross:
+    name: Build Release (Linux/Windows/macOS/WASM)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Disable SSL Verify
+        run: git config --global http.sslVerify false
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install cross
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cross
+
+      - name: Setup Zig
+        uses: mlugg/setup-zig@v1
+        with:
+          version: 0.12.0
+
+      - name: Install cargo-zigbuild
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-zigbuild
+
+      - name: Build (Linux + Windows GNU + WASM via cross)
+        run: |
+          set -euxo pipefail
+          TARGETS="\
+            x86_64-unknown-linux-gnu \
+            aarch64-unknown-linux-gnu \
+            i686-unknown-linux-gnu \
+            armv7-unknown-linux-gnueabihf \
+            x86_64-unknown-linux-musl \
+            aarch64-unknown-linux-musl \
+            i686-unknown-linux-musl \
+            armv7-unknown-linux-musleabihf \
+            x86_64-pc-windows-gnu \
+            aarch64-pc-windows-gnu \
+            i686-pc-windows-gnu \
+            wasm32-wasi \
+          "
+          make build-targets CROSS=1 TARGETS="$TARGETS"
+          make dist TARGETS="$TARGETS"
+
+      - name: Build (Apple via cargo-zigbuild)
+        continue-on-error: true
+        run: |
+          set -euxo pipefail
+          TARGETS="x86_64-apple-darwin aarch64-apple-darwin"
+          rustup target add $TARGETS
+          make build-targets-zig TARGETS="$TARGETS"
+          make dist TARGETS="$TARGETS"
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          path: ./dist/*
+          name: ${{ github.event.repository.name }}
+          if-no-files-found: ignore
+          retention-days: 7
+          compression-level: 6
+          overwrite: true
+
+      - name: Upload Release Assets (GitHub)
+        if: ${{ startsWith(github.ref, 'refs/tags/v') && contains(github.server_url, 'github') }}
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*
+
+      - name: Upload Release Assets (Gitea)
+        if: ${{ startsWith(github.ref, 'refs/tags/v') && contains(github.server_url, 'gitea') }}
+        uses: akkuman/gitea-release-action@v1
+        with:
+          files: |
+            dist/*

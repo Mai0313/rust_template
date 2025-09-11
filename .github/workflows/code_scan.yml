@@ -6,6 +6,9 @@ on:
       - main
       - master
   pull_request:
+    branches:
+      - main
+      - master
 
 permissions: write-all
 
@@ -58,6 +61,8 @@ jobs:
 
       - name: CodeQL Initialize
         uses: github/codeql-action/init@v3.29.11
+        with:
+          languages: rust
 
       - name: CodeQL Analyze
         uses: github/codeql-action/analyze@v3.29.11

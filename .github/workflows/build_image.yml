@@ -45,21 +45,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v6
-        with:
-          version: "latest"
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update Version
-        id: version
-        shell: bash
-        run: |
-          VERSION=$(uvx dunamai from git --bump --no-metadata --style pep440)
-          uv version $VERSION --frozen
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-
       - name: Login to the Container registry
         uses: docker/login-action@v3.4.0
         with:
@@ -101,7 +86,7 @@ jobs:
           images: ${{ matrix.target.tag }}
           tags: |
             latest
-            ${{ steps.version.outputs.version }}
+            type=ref,event=tag
 
       - name: Extract Image Name
         id: extracted_name

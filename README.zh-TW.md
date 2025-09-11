@@ -1,284 +1,97 @@
 <center>
 
-# Python 專案模板
+# Rust 專案模板
 
-[![PyPI version](https://img.shields.io/pypi/v/swebenchv2.svg)](https://pypi.org/project/swebenchv2/)
-[![python](https://img.shields.io/badge/-Python_%7C_3.10%7C_3.11%7C_3.12%7C_3.13-blue?logo=python&logoColor=white)](https://www.python.org/downloads/source/)
-[![uv](https://img.shields.io/badge/-uv_dependency_management-2C5F2D?logo=python&logoColor=white)](https://docs.astral.sh/uv/)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![Pydantic v2](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pydantic/pydantic/main/docs/badge/v2.json)](https://docs.pydantic.dev/latest/contributing/#badges)
-[![tests](https://github.com/Mai0313/repo_template/actions/workflows/test.yml/badge.svg)](https://github.com/Mai0313/repo_template/actions/workflows/test.yml)
-[![code-quality](https://github.com/Mai0313/repo_template/actions/workflows/code-quality-check.yml/badge.svg)](https://github.com/Mai0313/repo_template/actions/workflows/code-quality-check.yml)
-[![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/repo_template/tree/master?tab=License-1-ov-file)
-[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/repo_template/pulls)
-[![contributors](https://img.shields.io/github/contributors/Mai0313/repo_template.svg)](https://github.com/Mai0313/repo_template/graphs/contributors)
+[![rust](https://img.shields.io/badge/Rust-stable-orange?logo=rust&logoColor=white)](https://www.rust-lang.org/)
+[![tests](https://github.com/Mai0313/rust_template/actions/workflows/test.yml/badge.svg)](https://github.com/Mai0313/rust_template/actions/workflows/test.yml)
+[![code-quality](https://github.com/Mai0313/rust_template/actions/workflows/code-quality-check.yml/badge.svg)](https://github.com/Mai0313/rust_template/actions/workflows/code-quality-check.yml)
+[![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/Mai0313/rust_template/tree/master?tab=License-1-ov-file)
+[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Mai0313/rust_template/pulls)
 
 </center>
 
-🚀 幫助 Python 開發者「快速建立新專案」的模板。內建現代化套件管理、工具鏈、Docker 與完整 CI/CD 工作流程。
+🚀 幫助 Rust 開發者「快速建立新專案」的模板。內建 Cargo 佈局、Docker 與完整 CI/CD 流程。
 
-點擊 [使用此模板](https://github.com/Mai0313/repo_template/generate) 後即可開始。
+點擊 [使用此模板](https://github.com/Mai0313/rust_template/generate) 後即可開始。
 
 其他語言: [English](README.md) | [繁體中文](README.zh-TW.md) | [简体中文](README.zh-CN.md)
 
 ## ✨ 重點特色
 
-- 現代 `src/` 佈局 + 全面型別註解
-- `uv` 超快依賴管理
-- pre-commit 套件鏈：ruff、mdformat（含多插件）、codespell、nbstripout、mypy、uv hooks
-- 型別嚴謹：mypy + Pydantic 外掛設定
-- pytest + coverage + xdist；PR 覆蓋率摘要留言
-    - 覆蓋率門檻 80%，HTML/XML 報告輸出至 `.github/`
-- MkDocs Material + mkdocstrings（繼承圖）、markdown-exec、MathJax
-    - 開發伺服器 `0.0.0.0:9987`；雙語文件腳手架
-- 文件生成腳本：支援 class/檔案兩種模式、可選執行 notebook、可併發、保留目錄結構
-    - 使用 anyio 非同步處理與 rich 進度條
-- 打包：`uv build`、git-cliff 產 changelog
-- CI 自動版本：以 `dunamai` 從 git 產 PEP 440 版本
-- Dockerfile 多階段（內含 uv/uvx 與 Node.js）；Compose 服務（Redis/Postgres/Mongo/MySQL）含 healthcheck 與 volume
-- GitHub Actions：測試、品質、文件部署、套件打包、Docker 推送（GHCR + buildx cache）、Release Drafter、自動標籤、祕密掃描、語義化 PR、pre-commit 自動更新
-    - pre-commit 同時掛載多個 git 階段（pre-commit、post-checkout、post-merge、post-rewrite）
-    - i18n 友善檢查（允許中文標點等 confusables）
-    - 文件列出可替代的環境管理（Rye、Conda）
-    - 相容舊式流程：可用 `uv pip` 匯出 `requirements.txt`
+- 現代 Cargo 結構（`src/lib.rs`、`src/main.rs`、`tests/`）
+- clippy + rustfmt 品質把關
+- GitHub Actions：測試、品質、打包、Docker 推送、發布草稿、Rust 自動標籤、祕密掃描、語義化 PR、每週依賴更新
+- 多階段 Dockerfile，產出精簡執行映像
 
 ## 🚀 快速開始
 
-需求：
-
-- Python 3.10–3.13
-- `uv`（可用 `make uv-install` 安裝）
-- pre-commit hooks：`uv tool install pre-commit` 或 `uv sync --group dev`
-
-本機安裝：
+前置：安裝 Rust（rustup）、可選 Docker
 
 ```bash
-make uv-install
-uv sync                     # 安裝基礎依賴
-uv tool install pre-commit  # 或：uv sync --group dev
-make format
-make test
+make format    # 格式化
+make lint      # clippy（將警告視為錯誤）
+make test      # 測試
+make build     # 發布建置
+make run       # 執行
 ```
 
-執行範例 CLI：
+## 🐳 Docker
 
 ```bash
-uv run repo_template
+docker build -f docker/Dockerfile --target prod -t ghcr.io/<owner>/<repo>:latest .
+docker run --rm ghcr.io/<owner>/<repo>:latest
 ```
 
-作為模板使用（推薦）：
-
-1. 點擊「使用此模板」建立新倉庫
-2. 全域替換名稱：
+## 📦 打包發佈
 
 ```bash
-# 套件/模組名稱
-find . -type f -name "*.py" -o -name "*.md" -o -name "*.toml" | xargs sed -i 's/repo_template/your_package_name/g'
-
-# 專案顯示標題
-find . -type f -name "*.py" -o -name "*.md" -o -name "*.toml" | xargs sed -i 's/RepoTemplate/YourProjectTitle/g'
+cargo package
+# CARGO_REGISTRY_TOKEN=... cargo publish
 ```
 
-1. 更新 `pyproject.toml` 中的作者/描述等中繼資料
+CI 會在建立 `v*` 標籤時自動打包並上傳 `.crate` 產物。若需自動發佈到 crates.io，請在 `build_package.yml` 開啟發佈步驟並設定密鑰。
 
-## 🧰 指令一覽
+## 🧩 跨平台建置
+
+使用 Makefile 可建置多種 Target（三元組），Actions 也會呼叫相同目標：
 
 ```bash
-# 開發
-make help               # 顯示 Makefile 指令列表
-make clean              # 清理快取、產物與產生的文件
-make format             # 執行所有 pre-commit hooks
-make test               # 執行 pytest
-make gen-docs           # 從 src/ 與 scripts/ 生成文件
+# 在 Ubuntu 以 cross 建置 Linux/Windows/WASM
+cargo install cross --git https://github.com/cross-rs/cross
+make build-targets CROSS=1 TARGETS="x86_64-unknown-linux-gnu x86_64-pc-windows-gnu wasm32-wasi"
+make dist TARGETS="x86_64-unknown-linux-gnu x86_64-pc-windows-gnu wasm32-wasi"
 
-# Git 子模組（如有使用）
-make submodule-init     # 初始化與更新所有子模組
-make submodule-update   # 更新所有子模組至遠端
-
-# 依賴管理（uv）
-make uv-install         # 安裝 uv
-uv add <pkg>            # 加入正式依賴
-uv add <pkg> --dev      # 加入開發依賴
-# 同步選用依賴群組
-uv sync --group dev     # 安裝開發用依賴（pre-commit、poe、notebook）
-uv sync --group test    # 安裝測試用依賴
-uv sync --group docs    # 安裝文件用依賴
+# 在 Ubuntu 以 zig + cargo-zigbuild 建置 macOS（需安裝 zig）
+cargo install cargo-zigbuild
+# 安裝 zig（依環境而定）
+make build-targets-zig TARGETS="x86_64-apple-darwin aarch64-apple-darwin"
+make dist TARGETS="x86_64-apple-darwin aarch64-apple-darwin"
 ```
 
-## 📚 文件系統
+GitHub Actions `build_release.yml` 會在 Ubuntu 上進行上述交叉編譯並於打標籤時上傳至 Release。
 
-- 使用 MkDocs Material
-- 生成與預覽：
+## 🔁 CI/CD
 
-```bash
-uv sync --group docs
-make gen-docs
-uv run mkdocs serve    # http://localhost:9987
-```
-
-- 自動生成腳本：`scripts/gen_docs.py`（支援 .py 與 .ipynb）
-
-```bash
-# 以 class 為單位（預設）
-uv run python ./scripts/gen_docs.py --source ./src --output ./docs/Reference gen_docs
-
-# 以檔案為單位
-uv run python ./scripts/gen_docs.py --source ./src --output ./docs/Reference --mode file gen_docs
-```
-
-## 🐳 Docker 與本機服務
-
-`docker-compose.yaml` 內提供本機開發常見服務：`redis`、`postgresql`、`mongodb`、`mysql`，以及示範 `app` 服務（執行 CLI）。
-
-建立 `.env` 設定連線參數（預設如下）：
-
-```bash
-REDIS_PORT=6379
-POSTGRES_DB=postgres
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_PORT=5432
-MONGO_PORT=27017
-MYSQL_ROOT_PASSWORD=root
-MYSQL_DATABASE=mysql
-MYSQL_USER=mysql
-MYSQL_PASSWORD=mysql
-MYSQL_PORT=3306
-```
-
-啟動服務：
-
-```bash
-docker compose up -d redis postgresql mongodb mysql
-
-# 或啟動示範 app
-docker compose up -d app
-```
-
-## 📦 打包與發佈
-
-以 uv 產出套件（wheel/sdist 會放在 `dist/`）：
-
-```bash
-uv build
-```
-
-發佈到 PyPI（需設定 `UV_PUBLISH_TOKEN`）：
-
-```bash
-UV_PUBLISH_TOKEN=... uv publish
-```
-
-CI 亦會在建立 `v*` 標籤時自動打包並上傳產物。若要自動發布到 PyPI，請在 `build_package.yml` 取消註解 publish 步驟並設定 secret。
-
-### 在本機與 PyPI 執行你的 CLI
-
-- 本機（來源碼倉）：
-
-```bash
-uv run repo_template
-uv run cli
-```
-
-- 發佈到 PyPI 後，透過 `uvx`（臨時安裝後執行）：
-
-```bash
-# 若 console script 名稱為 "repo_template"
-uvx repo_template
-
-# 或指定套件/版本與入口名稱
-uvx --from your-package-name==0.1.0 your-entrypoint
-```
-
-## 🧭 選用任務管理（Poe the Poet）
-
-`pyproject.toml` 中的 `[tool.poe.tasks]` 定義了便捷任務，安裝 dev 群組（`uv sync --group dev`）或使用 `uvx` 後可用：
-
-```bash
-uv run poe docs        # 生成 + 啟動文件預覽（需 dev 群組）
-uv run poe gen         # 生成 + 發佈文件（gh-deploy）（需 dev 群組）
-uv run poe main        # 執行 CLI（等同 uv run repo_template）
-
-# 或使用 uvx（臨時環境，無需本地安裝）
-uvx poe docs
-```
-
-## 🔁 CI/CD 工作流程總覽
-
-所有流程位於 `.github/workflows/`，以下為觸發時機與用途：
-
-- Tests（`test.yml`）
-
-    - 觸發：對 `master`、`release/*` 的 PR
-    - 執行 pytest（3.10/3.11/3.12/3.13）並留下覆蓋率摘要
-
-- Code Quality（`code-quality-check.yml`）
-
-    - 觸發：PR
-    - 執行 ruff 與其它 pre-commit hooks
-
-- Docs Deploy（`deploy.yml`）
-
-    - 觸發：推送到 `master` 與 `v*` 標籤
-    - 建置並發布 MkDocs 網站到 GitHub Pages
-    - 需在 GitHub 啟用 Pages（Actions → Pages）
-
-- Build Package（`build_package.yml`）
-
-    - 觸發：`v*` 標籤
-    - 以 `uv build` 打包並上傳產物，並更新變更日誌
-    - 發布到 PyPI：取消註解 `uv publish` 並新增 `UV_PUBLISH_TOKEN` secret
-
-- Publish Docker Image（`build_image.yml`）
-
-    - 觸發：推送到 `master` 與 `v*` 標籤
-    - 發佈至 GHCR：`ghcr.io/<owner>/<repo>`（需 `docker/Dockerfile` 內有 `prod` target）
-
-- Build Executable（`build_executable.yml`）
-
-    - 觸發：`v*` 標籤（Windows runner）
-    - 範例流程（目前示範，請自行加入打包步驟）
-
-- Release Drafter（`release_drafter.yml`）
-
-    - 觸發：推送到 `main`/`master` 與 PR 事件
-    - 基於 Conventional Commits 維護草稿發佈
-
-- PR Labeler（`auto_labeler.yml`）
-
-    - 觸發：PR 與 Push
-    - 依 `.github/labeler.yml` 自動加標籤
-
-- Secret Scanning（`secret_scan.yml`）
-
-    - 觸發：Push 與 PR
-    - 使用 gitleaks 掃描機密
-
-- Semantic Pull Request（`semantic-pull-request.yml`）
-
-    - 觸發：PR 開啟/更新
-    - 強制 PR 標題符合 Conventional Commits
-
-### CI/CD 設定清單
-
-- PR 標題遵循 Conventional Commits
-- （選用）發佈到 PyPI：新增 `UV_PUBLISH_TOKEN` secret
-- （選用）啟用 GitHub Pages 以發布文件
-
-## 🧩 範例 CLI
-
-`pyproject.toml` 內提供 `repo_template` 與 `cli` 兩個入口點。目前示範回傳簡單 `Response` 模型，可依需求替換。
-
-```bash
-uv run repo_template
-```
+- 測試（`test.yml`）：建置/測試 + 覆蓋率產物
+- 品質（`code-quality-check.yml`）：rustfmt 檢查 + clippy（拒絕警告）
+- 打包（`build_package.yml`）：標籤觸發打包，可選 crates.io 發佈
+- 映像（`build_image.yml`）：推送 GHCR
+- 發佈建置（`build_release.yml`）：Linux/Windows/macOS/WASM 跨編譯封裝
+- 另含 Release Drafter、Labeler、Secret Scanning、Semantic PR、每週 cargo update
 
 ## 🤝 貢獻
 
 - 歡迎 Issue/PR
-- 請遵循程式風格（ruff、型別）
 - PR 標題遵循 Conventional Commits
+- 請保持格式化並通過 clippy 檢查
+
+- 在送出 PR 前，請先本機執行：
+  - `cargo fmt --all -- --check`
+  - `cargo clippy --all-targets --all-features -- -D warnings`
+  - `cargo test`
 
 ## 📄 授權
 
 MIT — 詳見 `LICENSE`。
+
+

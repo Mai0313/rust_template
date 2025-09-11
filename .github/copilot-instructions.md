@@ -4,118 +4,111 @@
 
 ### Project Background
 
-This repository is a Python project template intended to help developers bootstrap projects quickly. It ships with modern packaging, CLI entry points, docs generation, Docker/Compose, and a comprehensive CI/CD setup via GitHub Actions.
+This repository is a Rust project template intended to help developers bootstrap projects quickly. It ships with a modern Cargo layout, Docker multi-stage builds, and a comprehensive CI/CD setup via GitHub Actions.
 
 ### Core Infrastructure
 
-- Python 3.10/3.11/3.12 supported
-- Dependency management: `uv`
-- Project layout: `src/` packaging
-- Dockerfile with multi-stage builds; `docker-compose.yaml` for local services
-- MkDocs Material documentation with mkdocstrings
+- Rust toolchain: stable (via rustup)
+- Dependency and build: `cargo`
+- Lint/format: `clippy` and `rustfmt`
+- Dockerfile with multi-stage builds targeting a minimal runtime image
 
 ### Local Development
 
-- Install deps: `make uv-install && uv sync`
-- Run quality hooks: `make format`
-- Run tests: `make test`
-- Generate docs: `make gen-docs`
-- Serve docs: `uv run mkdocs serve`
-
-Dependency groups:
-
-- `uv sync --group test` for test-only deps
-- `uv sync --group docs` for docs-only deps
+- Format: `make format` (runs `cargo fmt --all`)
+- Format (check): `make format-check`
+- Lint: `make lint` (runs `cargo clippy -- -D warnings`)
+- Quality: `make quality` (format-check + clippy)
+- Test: `make test` (runs `cargo test --all`)
+- Build: `make build` (release build)
+- Run: `make run` (runs the binary)
+- Coverage: `make coverage` (generates `lcov.info` with cargo-llvm-cov)
 
 Make targets reference (from `Makefile`):
 
-- `make clean`: remove caches, artifacts and generated docs
-- `make format`: run pre-commit hooks (ruff etc.)
-- `make test`: run pytest
-- `make gen-docs`: generate docs for `src/` and `scripts/`
+- `make clean`: remove `target/` and caches
+- `make format`: rustfmt
+- `make format-check`: rustfmt --check
+- `make lint`: clippy with denied warnings
+- `make quality`: format-check + clippy
+- `make test`: cargo test
+- `make build`: cargo build --release
+- `make run`: cargo run --release
+- `make package`: cargo package
 - `make submodule-init|submodule-update`: submodule helpers (optional)
-- `make uv-install`: install `uv` on the system
 
-### CLI Entrypoints
+Cross-compilation & packaging helpers:
 
-Defined in `pyproject.toml` under `[project.scripts]`:
+- Target sets (Tier1/2 mainstream):
+  - Linux GNU: `x86_64-unknown-linux-gnu`, `aarch64-unknown-linux-gnu`, `i686-unknown-linux-gnu`, `armv7-unknown-linux-gnueabihf`
+  - Linux MUSL: `x86_64-unknown-linux-musl`, `aarch64-unknown-linux-musl`, `i686-unknown-linux-musl`, `armv7-unknown-linux-musleabihf`
+  - Windows GNU: `x86_64-pc-windows-gnu`, `aarch64-pc-windows-gnu`, `i686-pc-windows-gnu`
+  - Windows MSVC: `x86_64-pc-windows-msvc`, `aarch64-pc-windows-msvc`
+  - Apple Darwin: `x86_64-apple-darwin`, `aarch64-apple-darwin`
+  - WASM: `wasm32-wasi`
 
-- `repo_template` and `cli` → `repo_template.cli:main`
+- Build selected targets (native toolchains): `make build-targets TARGETS="<space-separated-targets>"`
+- Build selected targets with cross: `make build-targets CROSS=1 TARGETS="..."`
+- Build Apple targets with zig: `make build-targets-zig TARGETS="x86_64-apple-darwin aarch64-apple-darwin"`
+- Collect artifacts: `make dist TARGETS="..."` or `make dist-native`
 
-Example:
+Notes:
+- On Ubuntu, Linux/Windows(GNU)/WASM builds can be done via `cross` (Docker-based)
+- Apple (Darwin) builds on Ubuntu require `zig` + `cargo-zigbuild` and may require additional SDK pieces depending on your dependencies
 
-```bash
-uv run repo_template
-uv run cli
-```
+### Crate Usage
+
+- Library API lives in `src/lib.rs`
+- Binary entrypoint lives in `src/main.rs`
+- Run locally: `cargo run --release`
 
 ### Coding Style
 
-- Use ruff with repo-configured rules (run via pre-commit or `make format`)
-- PEP 8 naming: snake_case (functions/variables), PascalCase (classes), UPPER_CASE (constants)
-- Prefer full type hints on public functions and datamodels
-- Use Pydantic models with `Field(..., description=...)` where appropriate
-- Tests in `tests/`, discoverable by `pytest`
+- Use rustfmt for formatting
+- Use clippy and treat warnings as errors in CI
+- Prefer clear, explicit types on public APIs
 
-### Type Hints and Docs
+### Documentation
 
-- Type-annotate function parameters and returns
-- Prefer Google-style docstrings (configured in mkdocstrings)
-- Keep code/doc comments concise; English for docs
+- Generate docs: `cargo doc --no-deps`
+- Optionally view locally: `cargo doc --open`
 
-### Dependencies (uv)
+### Dependencies (Cargo)
 
-- Prod: `uv add <package>`, `uv remove <package>`
-- Dev: `uv add <package> --dev`, `uv remove <package> --dev`
+- Add dependency: `cargo add <crate>`
+- Update lockfile: `cargo update`
 
 Build and publish:
 
 ```bash
-uv build                 # create wheel/sdist in dist/
-UV_PUBLISH_TOKEN=... uv publish   # publish to PyPI
+cargo package                      # create .crate in target/package/
+CARGO_REGISTRY_TOKEN=... cargo publish   # publish to crates.io
 ```
 
-### Documentation Generation
+### Docker
 
-- Script: `scripts/gen_docs.py` supports `.py` and `.ipynb`
-- Examples:
-
-```bash
-uv run python ./scripts/gen_docs.py --source ./src --output ./docs/Reference gen_docs
-uv run python ./scripts/gen_docs.py --source ./src --output ./docs/Reference --mode file gen_docs
-```
-
-### Docker/Compose
-
-- `docker-compose.yaml` provides optional `redis`, `postgresql`, `mongodb`, `mysql` services and an example `app` service
-- Configure via `.env` (see `README.md` for keys)
+- Multi-stage Dockerfile at `docker/Dockerfile`
+- Build prod image: `docker build -f docker/Dockerfile --target prod -t <image> .`
 
 ### CI/CD Workflows (GitHub Actions)
 
 All workflows live in `.github/workflows/`:
 
-- `test.yml`: Run pytest on PRs to `master`/`release/*` (3.10/3.11/3.12)
-- `code-quality-check.yml`: Run pre-commit hooks on PRs
-- `deploy.yml`: Build and publish MkDocs site on pushes to `master` and tags `v*`
-- `build_package.yml`: Build wheel/sdist on tags `v*`, upload artifacts, generate changelog; optional PyPI publish with `UV_PUBLISH_TOKEN`
+- `test.yml`: Set up Rust toolchain, cargo build/test, upload coverage (cargo-llvm-cov)
+- `code-quality-check.yml`: Run rustfmt (check) and clippy (deny warnings)
+- `build_package.yml`: On tags `v*`, bump version from tag, `cargo package`; upload `.crate`, optional crates.io publish
 - `build_image.yml`: Build and push Docker image to GHCR on `master` and tags `v*`
-- `build_executable.yml`: Example Windows packaging flow on tags `v*` (stub)
+- `build_release.yml`: On tags, cross-builds Linux/Windows(GNU)/WASM via `cross` and Apple via `cargo-zigbuild` on Ubuntu; uploads archives and attaches to release
 - `release_drafter.yml`: Maintain a draft release using Conventional Commits
-- `auto_labeler.yml`: Auto-apply labels based on `.github/labeler.yml`
-- `secret_scan.yml`: Run gitleaks on push/PR
+- `auto_labeler.yml`: Auto-apply labels based on `.github/labeler.yml` (configured with Rust file patterns)
+- `code_scan.yml`: Secret scan (gitleaks/trufflehog), CodeQL (Rust), Trivy filesystem scan
 - `semantic-pull-request.yml`: Enforce Conventional Commit PR titles
+- `pre-commit-updater.yml` (repurposed): Weekly `cargo update` to refresh `Cargo.lock` and open a PR
 
 ### Conventions
 
 - Conventional Commit PR titles (enforced by workflow)
 - Prefer small, focused PRs with tests and docs
-- Update this file plus `README.md`, `README.zh-TW.md`, and `README.zh-CN.md` when workflows, commands, or usage changes
+- Update this file plus `README.md`, `README.zh-TW.md`, and `README.zh-CN.md` when workflows, commands, or usage change
 
-### Running from PyPI via uvx
-
-After publishing your package, the CLI can be executed without prior install using `uvx`:
-
-```bash
-uvx repo_template
-uvx --from your-package-name==0.1.0 your-entrypoint
-```
+- Before opening a PR locally run: `cargo fmt --all -- --check`, `cargo clippy --all-targets --all-features -- -D warnings`, and `cargo test`.

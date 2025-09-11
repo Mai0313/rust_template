@@ -21,28 +21,18 @@ permissions: write-all
 jobs:
   run_tests:
     if: ${{ !(startsWith(github.head_ref, 'chore/') || startsWith(github.head_ref, 'ci/') || startsWith(github.head_ref, 'docs/')) }}
-    runs-on: ubuntu-latest
-    # container: catthehacker/ubuntu:act-20.04  # Uncomment it if you use it on Gitea
-
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os:
           - ubuntu-latest
-        python-version:
-          - "3.10"
-          - "3.11"
-          - "3.12"
-          - "3.13"
-
-    timeout-minutes: 20
+        toolchain:
+          - stable
 
     steps:
       - name: Disable SSL Verify
         run: git config --global http.sslVerify false
-
-      # - name: Setup MTK Certification
-      #   uses: https://gitea.mediatek.inc/actions/mtk-cert-action@v1.2.0
 
       - name: Checkout
         uses: actions/checkout@v5
@@ -50,37 +40,34 @@ jobs:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v6
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@master
         with:
-          version: "latest"
-          python-version: ${{ matrix.python-version }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          toolchain: ${{ matrix.toolchain }}
+          components: clippy, rustfmt
 
-      - name: Install dependencies
-        run: |
-          uv python pin ${{ matrix.python-version }}
-          uv sync --group test
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
 
-      - name: Check for tests
-        id: check_tests
-        run: |
-          if [ -f tests/test_*.py ] || [ -d tests ]; then
-              echo "Tests exist, proceeding to run them."
-              echo "has_tests=true" >> $GITHUB_OUTPUT
-          else
-              echo "No tests to run."
-              echo "has_tests=false" >> $GITHUB_OUTPUT
-          fi
+      - name: Build
+        run: cargo build --locked --verbose
 
-      - name: Run pytest
-        if: ${{ steps.check_tests.outputs.has_tests == 'true' }}
-        run: |
-          uv run pytest -vv | tee .coverage.txt
+      - name: Test
+        run: cargo test --all --locked --verbose
 
-      - name: Pytest coverage comment
-        uses: MishaKav/pytest-coverage-comment@main
+      - name: Install cargo-llvm-cov
+        uses: taiki-e/install-action@v2
         with:
-          pytest-coverage-path: ./.coverage.txt
-          junitxml-path: ./.github/reports/.coverage.pytest.xml
-          pytest-xml-coverage-path: ./.github/reports/coverage.xml
+          tool: cargo-llvm-cov
+
+      - name: Coverage (lcov)
+        run: |
+          cargo llvm-cov --workspace --lcov --output-path lcov.info
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: lcov.info
+          path: lcov.info
+          if-no-files-found: ignore
+          retention-days: 7
