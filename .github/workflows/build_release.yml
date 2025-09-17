@@ -1,4 +1,11 @@
-name: Build Release Artifacts
+# Release workflow for codex-rs.
+# To release, follow a workflow like:
+# ```
+# git tag -a rust-v0.1.0 -m "Release 0.1.0"
+# git push origin rust-v0.1.0
+# ```
+
+name: Build and Release (Rust multi-platform)
 
 on:
   push:
@@ -8,10 +15,37 @@ on:
 
 permissions: write-all
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
-  build_release:
-    name: Build Release
-    runs-on: ubuntu-latest
+  build:
+    name: ${{ matrix.runner }} - ${{ matrix.target }}
+    runs-on: ${{ matrix.runner }}
+
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-14
+            target: aarch64-apple-darwin
+          - runner: macos-14
+            target: x86_64-apple-darwin
+          - runner: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - runner: ubuntu-24.04
+            target: x86_64-unknown-linux-musl
+          - runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+          - runner: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-musl
+          - runner: windows-latest
+            target: x86_64-pc-windows-msvc
+          - runner: windows-11-arm
+            target: aarch64-pc-windows-msvc
 
     steps:
       - name: Disable SSL Verify
@@ -23,26 +57,86 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@master
+      - name: Setup Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
+          targets: ${{ matrix.target }}
 
-      - name: Build
-        run: cargo build --release --locked
+      - name: Install Build Tools
+        if: contains(matrix.target, 'musl') && startsWith(matrix.runner, 'ubuntu')
+        run: |
+          sudo apt install -y musl-tools pkg-config
+
+      - name: Cargo build (release)
+        run: |
+          cargo build --target ${{ matrix.target }} --release --locked --bin ${{ github.event.repository.name }}
+
+      - name: Stage Artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          dest="dist/${{ matrix.target }}"
+          mkdir -p "$dest"
+          bin_dir="target/${{ matrix.target }}/release"
+          bin="${{ github.event.repository.name }}"
+          if [[ "${{ matrix.runner }}" == windows* ]]; then
+            bin="${bin}.exe"
+          fi
+          # Copy only the binary to avoid uploading sidecar files like *.d
+          cp "${bin_dir}/${bin}" "${dest}/${bin}"
+
+      - name: Create .zip (Windows)
+        if: startsWith(matrix.runner, 'windows')
+        shell: powershell
+        run: |
+          $ErrorActionPreference = "Stop"
+          $dest = "dist/${{ matrix.target }}"
+          $version = "${env:GITHUB_REF_NAME}".Substring(1)
+          $bin = "${{ github.event.repository.name }}.exe"
+          $zip = "${{ github.event.repository.name }}-v$version-${{ matrix.target }}.zip"
+          Compress-Archive -Path "$dest\$bin" -DestinationPath "$dest\$zip" -Force
+
+      - name: Create .tar.gz (all platforms)
+        shell: bash
+        run: |
+          set -euo pipefail
+          dest="dist/${{ matrix.target }}"
+          version="${GITHUB_REF_NAME#v}"
+          bin="${{ github.event.repository.name }}"
+          archive="${{ github.event.repository.name }}-v${version}-${{ matrix.target }}.tar.gz"
+          # Try to include .exe if present, otherwise fall back to unix name
+          tar -C "$dest" -czf "$dest/${archive}" "${bin}" "${bin}.exe" 2>/dev/null || \
+          tar -C "$dest" -czf "$dest/${archive}" "${bin}"
+          # Remove raw binaries after archiving to avoid accidental upload
+          rm -f "$dest/${bin}" "$dest/${bin}.exe" || true
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4.6.2
         with:
-          path: ./target/release/${{ github.event.repository.name }}*
-          name: ${{ github.event.repository.name }}
-          if-no-files-found: ignore
+          name: ${{ matrix.target }}
+          path: dist/${{ matrix.target }}/*
+          if-no-files-found: error
           retention-days: 7
           compression-level: 6
           overwrite: true
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: List packaged files
+        run: ls -R dist/ | cat
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            ./target/release/${{ github.event.repository.name }}*
+            dist/**/*

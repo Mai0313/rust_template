@@ -67,9 +67,19 @@ CI builds run automatically on tags matching `v*` and upload the `.crate` file. 
 
 ## 🧩 Cross Builds
 
-This template does not ship cross-compile targets by default. If you need cross or zig-based builds, install and configure them per your environment.
+This template does not ship cross-compile tooling by default. If you need cross or zig-based builds locally, install and configure them per your environment.
 
-GitHub Actions `build_release.yml` builds Linux release binaries on tags matching `v*` and uploads them as release assets.
+GitHub Actions `build_release.yml` builds multi-platform release binaries on tags matching `v*` and uploads them to the GitHub Release assets.
+
+Targets:
+- x86_64-unknown-linux-gnu, x86_64-unknown-linux-musl
+- aarch64-unknown-linux-gnu, aarch64-unknown-linux-musl
+- x86_64-apple-darwin, aarch64-apple-darwin
+- x86_64-pc-windows-msvc, aarch64-pc-windows-msvc
+
+Assets naming:
+- `<bin>-v<version>-<target>.tar.gz` (all platforms)
+- `<bin>-v<version>-<target>.zip` (Windows additionally)
 
 ## 🔁 CI/CD Workflows
 

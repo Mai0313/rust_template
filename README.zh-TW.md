@@ -66,9 +66,19 @@ CI 會在建立 `v*` 標籤時自動打包並上傳 `.crate` 產物。若需自�
 
 ## 🧩 跨平台建置
 
-目前模板預設不含跨編譯目標。若需使用 cross 或 zig 進行跨編譯，請依自身需求額外安裝與設定。
+目前模板預設不含本機跨編譯工具。若需在本機使用 cross 或 zig，請依環境安裝與設定。
 
-GitHub Actions `build_release.yml` 會在建立符合 `v*` 的標籤時於 Linux 環境建置釋出二進位並上傳至 Release。
+GitHub Actions `build_release.yml` 會在建立 `v*` 標籤時針對多平台建置釋出二進位，並上傳至 GitHub Release。
+
+目標平台（targets）：
+- x86_64-unknown-linux-gnu、x86_64-unknown-linux-musl
+- aarch64-unknown-linux-gnu、aarch64-unknown-linux-musl
+- x86_64-apple-darwin、aarch64-apple-darwin
+- x86_64-pc-windows-msvc、aarch64-pc-windows-msvc
+
+資產命名（assets）：
+- `<bin>-v<version>-<target>.tar.gz`（所有平台）
+- `<bin>-v<version>-<target>.zip`（Windows 另附）
 
 ## 🔁 CI/CD
 
