@@ -35,7 +35,6 @@ make build-release  # 发布构建（release）
 make run            # 运行（release）
 make clean          # 清理构建产物与缓存
 make package        # 构建 crate 包（允许 dirty）
-make package-release # 构建 crate 包（clean）
 make help           # 查看可用目标
 ```
 
@@ -56,9 +55,8 @@ docker run --rm rust_template:latest
 
 ```bash
 make package        # 构建 crate 包（允许 dirty）
-make package-release # 构建 crate 包（clean）
 # 或直接使用 cargo：
-cargo package --locked
+cargo package --locked --allow-dirty
 # CARGO_REGISTRY_TOKEN=... cargo publish
 ```
 

@@ -36,7 +36,6 @@ make build-release  # cargo build --release
 make run            # run the release binary
 make clean          # clean build artifacts and caches
 make package        # build crate package (allow dirty)
-make package-release # build crate package (clean)
 make help           # list targets
 ```
 
@@ -57,9 +56,8 @@ docker run --rm rust_template:latest
 
 ```bash
 make package        # build crate package (allow dirty)
-make package-release # build crate package (clean)
 # or use cargo directly:
-cargo package --locked
+cargo package --locked --allow-dirty
 # CARGO_REGISTRY_TOKEN=... cargo publish
 ```
 

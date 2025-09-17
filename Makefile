@@ -26,9 +26,6 @@ build-release: ## Build release binary
 package: ## Build crate package (.crate)
 	cargo package --locked --allow-dirty
 
-package-release: ## Build crate package (.crate)
-	cargo package --locked
-
 test: ## Run all tests
 	cargo test --all --verbose
 
