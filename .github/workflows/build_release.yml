@@ -9,7 +9,7 @@ on:
 permissions: write-all
 
 jobs:
-  build_cross:
+  build_release:
     name: Build Release (Linux/Windows/macOS/WASM)
     runs-on: ubuntu-latest
 
