@@ -17,6 +17,7 @@ ALL_TARGETS := $(LINUX_GNU_TARGETS) $(LINUX_MUSL_TARGETS) $(WINDOWS_GNU_TARGETS)
 TARGETS ?= $(ALL_TARGETS)
 
 .PHONY: all
+
 help: # Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
@@ -33,26 +34,17 @@ format: ## Format code with rustfmt and Lint with clippy
 	cargo fmt --all
 	cargo clippy --all-targets --all-features
 
-test: ## Run all tests
-	cargo test --all --verbose
-
 build: ## Build release binary
 	cargo build --release --locked
-
-run: ## Run the application
-	cargo run --release
-
-coverage: ## Generate test coverage (lcov) with cargo-llvm-cov into lcov.info
-	cargo llvm-cov --workspace --lcov --output-path lcov.info
 
 package: ## Build crate package (.crate)
 	cargo package --locked --allow-dirty
 
-submodule-init: ## Install and update all submodules
-	git submodule update --recursive --init
+test: ## Run all tests
+	cargo test --all --verbose
 
-submodule-update:  # Update all submodules
-	git submodule update --recursive --remote
+run: ## Run the application
+	cargo run --release
 
 # -----------------------------------------------------------------------------
 # Cross-compilation utilities
