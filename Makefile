@@ -15,7 +15,7 @@ BUILD_TOOL := $(if $(filter 1,$(CROSS)),cross,$(CARGO))
 # Common target triples (Tier 1/2 mainstream)
 LINUX_GNU_TARGETS := x86_64-unknown-linux-gnu aarch64-unknown-linux-gnu i686-unknown-linux-gnu armv7-unknown-linux-gnueabihf
 LINUX_MUSL_TARGETS := x86_64-unknown-linux-musl aarch64-unknown-linux-musl i686-unknown-linux-musl armv7-unknown-linux-musleabihf
-WINDOWS_GNU_TARGETS := x86_64-pc-windows-gnu aarch64-pc-windows-gnu i686-pc-windows-gnu
+WINDOWS_GNU_TARGETS := x86_64-pc-windows-gnu i686-pc-windows-gnu
 WINDOWS_MSVC_TARGETS := x86_64-pc-windows-msvc aarch64-pc-windows-msvc
 APPLE_TARGETS := x86_64-apple-darwin aarch64-apple-darwin
 WASM_TARGETS := wasm32-wasi
