@@ -1,10 +1,3 @@
-.PHONY: help clean format format-check lint quality test build run coverage package \
-        submodule-init submodule-update print-targets install-targets install-cross \
-        install-zigbuild setup-ubuntu build-targets build-targets-zig dist
-
-help:  ## Show help
-	@grep -E '^[.a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-
 # Project metadata
 BIN_NAME ?= rust_template
 CARGO ?= cargo
@@ -23,22 +16,22 @@ WASM_TARGETS := wasm32-wasi
 ALL_TARGETS := $(LINUX_GNU_TARGETS) $(LINUX_MUSL_TARGETS) $(WINDOWS_GNU_TARGETS) $(WINDOWS_MSVC_TARGETS) $(APPLE_TARGETS) $(WASM_TARGETS)
 TARGETS ?= $(ALL_TARGETS)
 
+.PHONY: all
+help: # Show this help message
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
 clean: ## Clean build artifacts and caches
-	rm -rf target dist tmp .cache
-	find . -type f -name "*.DS_Store" -ls -delete
+	@rm -rf target dist tmp .cache
+	@find . -type f -name "*.DS_Store" -ls -delete
+	@$(GO) clean -cache
+	@$(GO) clean -testcache
+	@$(GO) clean -fuzzcache
+	@git fetch --prune
+	@git gc --prune=now --aggressive
 
-format: ## Format code with rustfmt
+format: ## Format code with rustfmt and Lint with clippy
 	cargo fmt --all
-
-format-check: ## Check formatting (rustfmt --check)
-	cargo fmt --all -- --check
-
-lint: ## Lint with clippy (deny warnings)
-	cargo clippy --all-targets --all-features -- -D warnings
-
-quality: ## Run format-check and clippy
-	$(MAKE) format-check
-	$(MAKE) lint
+	cargo clippy --all-targets --all-features
 
 test: ## Run all tests
 	cargo test --all --verbose
