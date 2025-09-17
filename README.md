@@ -29,11 +29,15 @@ Other Languages: [English](README.md) | [繁體中文](README.zh-TW.md) | [简�
 Prerequisites: Rust toolchain (`rustup`), Docker (optional)
 
 ```bash
-make format    # rustfmt
-make lint      # clippy -D warnings
-make test      # cargo test
-make build     # cargo build --release
-make run       # run the binary
+make fmt            # rustfmt + clippy
+make test           # cargo test
+make build          # cargo build (debug)
+make build-release  # cargo build --release
+make run            # run the release binary
+make clean          # clean build artifacts and caches
+make package        # build crate package (allow dirty)
+make package-release # build crate package (clean)
+make help           # list targets
 ```
 
 ## 🐳 Docker
@@ -43,10 +47,19 @@ docker build -f docker/Dockerfile --target prod -t ghcr.io/<owner>/<repo>:latest
 docker run --rm ghcr.io/<owner>/<repo>:latest
 ```
 
+Or using the actual binary name:
+```bash
+docker build -f docker/Dockerfile --target prod -t rust_template:latest .
+docker run --rm rust_template:latest
+```
+
 ## 📦 Packaging
 
 ```bash
-cargo package
+make package        # build crate package (allow dirty)
+make package-release # build crate package (clean)
+# or use cargo directly:
+cargo package --locked
 # CARGO_REGISTRY_TOKEN=... cargo publish
 ```
 
@@ -54,31 +67,25 @@ CI builds run automatically on tags matching `v*` and upload the `.crate` file. 
 
 ## 🧩 Cross Builds
 
-Using the Makefile you can build for multiple target triples (actions call the same targets):
+This template does not ship cross-compile targets by default. If you need cross or zig-based builds, install and configure them per your environment.
 
-```bash
-# Linux/Windows/WASM on Ubuntu via cross
-cargo install cross --git https://github.com/cross-rs/cross
-make build-targets CROSS=1 TARGETS="x86_64-unknown-linux-gnu x86_64-pc-windows-gnu wasm32-wasi"
-make dist TARGETS="x86_64-unknown-linux-gnu x86_64-pc-windows-gnu wasm32-wasi"
-
-# macOS on Ubuntu via zig + cargo-zigbuild (requires zig)
-cargo install cargo-zigbuild
-# install zig (e.g. with your package manager)
-make build-targets-zig TARGETS="x86_64-apple-darwin aarch64-apple-darwin"
-make dist TARGETS="x86_64-apple-darwin aarch64-apple-darwin"
-```
-
-GitHub Actions `build_release.yml` cross-builds these artifacts on Ubuntu and uploads them as release assets on tags.
+GitHub Actions `build_release.yml` builds Linux release binaries on tags matching `v*` and uploads them as release assets.
 
 ## 🔁 CI/CD Workflows
 
+### Main Workflows
 - Tests (`test.yml`): cargo build/test + coverage artifact
 - Code Quality (`code-quality-check.yml`): rustfmt check + clippy (deny warnings)
 - Build Package (`build_package.yml`): package on tag `v*`, optional crates.io publish
-- Publish Docker Image (`build_image.yml`): push to GHCR on `master` and tags `v*`
-- Build Release (`build_release.yml`): cross-compiled archives for Linux, Windows, macOS, WASM
-- Release Drafter, Labeler, Secret Scanning, Semantic PR, Weekly cargo update
+- Publish Docker Image (`build_image.yml`): push to GHCR on `main/master` and tags `v*`
+- Build Release (`build_release.yml`): Linux release binaries uploaded on tags `v*`
+
+### Additional Automation
+- Auto Labeler (`auto_labeler.yml`): automatically label PRs based on branch names and file changes
+- Code Scan (`code_scan.yml`): security scanning
+- Release Drafter (`release_drafter.yml`): auto-generate release notes
+- Semantic PR (`semantic-pull-request.yml`): enforce PR title format
+- Dependabot weekly dependency updates
 
 ## 🤝 Contributing
 

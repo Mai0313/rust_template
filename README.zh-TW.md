@@ -28,11 +28,15 @@
 前置：安裝 Rust（rustup）、可選 Docker
 
 ```bash
-make format    # 格式化
-make lint      # clippy（將警告視為錯誤）
-make test      # 測試
-make build     # 發布建置
-make run       # 執行
+make fmt            # 格式化 + clippy
+make test           # 測試
+make build          # 調試建置（debug）
+make build-release  # 發布建置（release）
+make run            # 執行（release）
+make clean          # 清理建置產物與快取
+make package        # 建立 crate 套件（允許 dirty）
+make package-release # 建立 crate 套件（clean）
+make help           # 檢視可用目標
 ```
 
 ## 🐳 Docker
@@ -42,10 +46,19 @@ docker build -f docker/Dockerfile --target prod -t ghcr.io/<owner>/<repo>:latest
 docker run --rm ghcr.io/<owner>/<repo>:latest
 ```
 
+或使用實際的二進位名稱：
+```bash
+docker build -f docker/Dockerfile --target prod -t rust_template:latest .
+docker run --rm rust_template:latest
+```
+
 ## 📦 打包發佈
 
 ```bash
-cargo package
+make package        # 建立 crate 套件（允許 dirty）
+make package-release # 建立 crate 套件（clean）
+# 或直接使用 cargo：
+cargo package --locked
 # CARGO_REGISTRY_TOKEN=... cargo publish
 ```
 
@@ -53,31 +66,25 @@ CI 會在建立 `v*` 標籤時自動打包並上傳 `.crate` 產物。若需自�
 
 ## 🧩 跨平台建置
 
-使用 Makefile 可建置多種 Target（三元組），Actions 也會呼叫相同目標：
+目前模板預設不含跨編譯目標。若需使用 cross 或 zig 進行跨編譯，請依自身需求額外安裝與設定。
 
-```bash
-# 在 Ubuntu 以 cross 建置 Linux/Windows/WASM
-cargo install cross --git https://github.com/cross-rs/cross
-make build-targets CROSS=1 TARGETS="x86_64-unknown-linux-gnu x86_64-pc-windows-gnu wasm32-wasi"
-make dist TARGETS="x86_64-unknown-linux-gnu x86_64-pc-windows-gnu wasm32-wasi"
-
-# 在 Ubuntu 以 zig + cargo-zigbuild 建置 macOS（需安裝 zig）
-cargo install cargo-zigbuild
-# 安裝 zig（依環境而定）
-make build-targets-zig TARGETS="x86_64-apple-darwin aarch64-apple-darwin"
-make dist TARGETS="x86_64-apple-darwin aarch64-apple-darwin"
-```
-
-GitHub Actions `build_release.yml` 會在 Ubuntu 上進行上述交叉編譯並於打標籤時上傳至 Release。
+GitHub Actions `build_release.yml` 會在建立符合 `v*` 的標籤時於 Linux 環境建置釋出二進位並上傳至 Release。
 
 ## 🔁 CI/CD
 
-- 測試（`test.yml`）：建置/測試 + 覆蓋率產物
+### 主要工作流程
+- 測試（`test.yml`）：建置與測試，並輸出覆蓋率（cargo-llvm-cov）
 - 品質（`code-quality-check.yml`）：rustfmt 檢查 + clippy（拒絕警告）
-- 打包（`build_package.yml`）：標籤觸發打包，可選 crates.io 發佈
-- 映像（`build_image.yml`）：推送 GHCR
-- 發佈建置（`build_release.yml`）：Linux/Windows/macOS/WASM 跨編譯封裝
-- 另含 Release Drafter、Labeler、Secret Scanning、Semantic PR、每週 cargo update
+- 打包（`build_package.yml`）：標籤 `v*` 觸發打包，可選 crates.io 發佈
+- 映像（`build_image.yml`）：在 `main/master` 與標籤 `v*` 推送至 GHCR
+- 發佈建置（`build_release.yml`）：標籤 `v*` 時建置 Linux 釋出二進位並上傳
+
+### 其他自動化功能
+- 自動標籤（`auto_labeler.yml`）：根據分支名稱與檔案變更自動為 PR 添加標籤
+- 程式碼掃描（`code_scan.yml`）：安全性掃描
+- 發佈草稿（`release_drafter.yml`）：自動生成 release notes
+- 語義化 PR（`semantic-pull-request.yml`）：檢查 PR 標題格式
+- Dependabot 每週依賴更新
 
 ## 🤝 貢獻
 
