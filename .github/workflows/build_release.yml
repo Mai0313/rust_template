@@ -10,7 +10,7 @@ permissions: write-all
 
 jobs:
   build_release:
-    name: Build Release (Linux/Windows/macOS/WASM)
+    name: Build Release
     runs-on: ubuntu-latest
 
     steps:
