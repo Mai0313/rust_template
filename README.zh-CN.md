@@ -29,8 +29,8 @@
 
 ```bash
 make fmt            # 格式化 + clippy
-make test           # 测试
-make build          # 调试构建（debug）
+make test           # 测试（包含所有目标与详细输出）
+make build          # 构建（release 模式）
 make build-release  # 发布构建（release）
 make run            # 运行（release）
 make clean          # 清理构建产物与缓存
@@ -73,7 +73,7 @@ GitHub Actions `build_release.yml` 会在创建符合 `v*` 的标签时在 Linux
 ## 🔁 CI/CD
 
 ### 主要工作流程
-- 测试（`test.yml`）：构建与测试，并输出覆盖率（cargo-llvm-cov）
+- 测试（`test.yml`）：构建与测试，生成 LCOV 格式覆盖率报告并上传 artifact
 - 质量（`code-quality-check.yml`）：rustfmt 检查 + clippy（拒绝警告）
 - 打包（`build_package.yml`）：标签 `v*` 触发打包，可选 crates.io 发布
 - 镜像（`build_image.yml`）：在 `main/master` 与标签 `v*` 推送至 GHCR
@@ -81,7 +81,7 @@ GitHub Actions `build_release.yml` 会在创建符合 `v*` 的标签时在 Linux
 
 ### 其他自动化功能
 - 自动标签（`auto_labeler.yml`）：根据分支名称与文件变更自动为 PR 添加标签
-- 代码扫描（`code_scan.yml`）：安全性扫描
+- 代码扫描（`code_scan.yml`）：多层安全性扫描（GitLeaks、Trufflehog 秘密扫描、CodeQL 代码分析、Trivy 漏洞扫描）
 - 发布草稿（`release_drafter.yml`）：自动生成 release notes
 - 语义化 PR（`semantic-pull-request.yml`）：检查 PR 标题格式
 - Dependabot 每周依赖更新

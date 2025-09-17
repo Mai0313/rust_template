@@ -30,8 +30,8 @@ Prerequisites: Rust toolchain (`rustup`), Docker (optional)
 
 ```bash
 make fmt            # rustfmt + clippy
-make test           # cargo test
-make build          # cargo build (debug)
+make test           # cargo test (all targets with verbose output)
+make build          # cargo build (release mode)
 make build-release  # cargo build --release
 make run            # run the release binary
 make clean          # clean build artifacts and caches
@@ -74,7 +74,7 @@ GitHub Actions `build_release.yml` builds Linux release binaries on tags matchin
 ## 🔁 CI/CD Workflows
 
 ### Main Workflows
-- Tests (`test.yml`): cargo build/test + coverage artifact
+- Tests (`test.yml`): cargo build/test + generate LCOV coverage report and upload artifact
 - Code Quality (`code-quality-check.yml`): rustfmt check + clippy (deny warnings)
 - Build Package (`build_package.yml`): package on tag `v*`, optional crates.io publish
 - Publish Docker Image (`build_image.yml`): push to GHCR on `main/master` and tags `v*`
@@ -82,7 +82,7 @@ GitHub Actions `build_release.yml` builds Linux release binaries on tags matchin
 
 ### Additional Automation
 - Auto Labeler (`auto_labeler.yml`): automatically label PRs based on branch names and file changes
-- Code Scan (`code_scan.yml`): security scanning
+- Code Scan (`code_scan.yml`): multi-layer security scanning (GitLeaks, Trufflehog secret scanning, CodeQL code analysis, Trivy vulnerability scanning)
 - Release Drafter (`release_drafter.yml`): auto-generate release notes
 - Semantic PR (`semantic-pull-request.yml`): enforce PR title format
 - Dependabot weekly dependency updates

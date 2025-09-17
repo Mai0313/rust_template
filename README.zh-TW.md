@@ -29,10 +29,10 @@
 
 ```bash
 make fmt            # 格式化 + clippy
-make test           # 測試
-make build          # 調試建置（debug）
-make build-release  # 發布建置（release）
-make run            # 執行（release）
+make test           # 測試（包含所有目標與詳細輸出）
+make build          # 建置（release 模式）
+make build-release  # 發布建置（release 模式）
+make run            # 執行（release 模式）
 make clean          # 清理建置產物與快取
 make package        # 建立 crate 套件（允許 dirty）
 make package-release # 建立 crate 套件（clean）
@@ -73,7 +73,7 @@ GitHub Actions `build_release.yml` 會在建立符合 `v*` 的標籤時於 Linux
 ## 🔁 CI/CD
 
 ### 主要工作流程
-- 測試（`test.yml`）：建置與測試，並輸出覆蓋率（cargo-llvm-cov）
+- 測試（`test.yml`）：建置與測試，生成 LCOV 格式覆蓋率報告並上傳 artifact
 - 品質（`code-quality-check.yml`）：rustfmt 檢查 + clippy（拒絕警告）
 - 打包（`build_package.yml`）：標籤 `v*` 觸發打包，可選 crates.io 發佈
 - 映像（`build_image.yml`）：在 `main/master` 與標籤 `v*` 推送至 GHCR
@@ -81,7 +81,7 @@ GitHub Actions `build_release.yml` 會在建立符合 `v*` 的標籤時於 Linux
 
 ### 其他自動化功能
 - 自動標籤（`auto_labeler.yml`）：根據分支名稱與檔案變更自動為 PR 添加標籤
-- 程式碼掃描（`code_scan.yml`）：安全性掃描
+- 程式碼掃描（`code_scan.yml`）：多層次安全性掃描（GitLeaks、Trufflehog 祕密掃描、CodeQL 程式碼分析、Trivy 漏洞掃描）
 - 發佈草稿（`release_drafter.yml`）：自動生成 release notes
 - 語義化 PR（`semantic-pull-request.yml`）：檢查 PR 標題格式
 - Dependabot 每週依賴更新
