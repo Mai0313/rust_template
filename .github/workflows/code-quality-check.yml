@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Rust toolchain
+      - name: Setup Rust Toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
