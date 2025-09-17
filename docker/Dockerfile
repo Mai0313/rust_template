@@ -8,7 +8,7 @@ LABEL maintainer="Wei Lee <mai@mai0313.com>" \
 
 WORKDIR /app
 COPY . .
-RUN make build-release
+RUN cargo build --release --locked
 
 ########################################################################################
 
