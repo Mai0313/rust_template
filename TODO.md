@@ -4,6 +4,7 @@
 我希望在這個action中 將所有平台的binaries打包上傳到github release Assets
 
 唯一不同的地方是 範例中有限制tag名稱 我的部分不需要限制那麼複雜 按照原本的方式限制 v 開頭即可
+並且我不需要上傳到 npm, 我只會發發佈在 Github Release
 
 上傳時也要注意
 ./target/release/${{ github.event.repository.name }}*
