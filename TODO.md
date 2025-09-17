@@ -9,5 +9,3 @@
 上傳時也要注意
 ./target/release/${{ github.event.repository.name }}*
 在windows下 會有 .exe 但是linux/macos則不會有 目前作法可能會錯誤將 *.d 一起上傳 這樣不對 所以你要妥善規劃!
-
-如果有action能輔助 也可以使用
