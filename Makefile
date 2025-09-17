@@ -13,7 +13,7 @@ clean: ## Clean build artifacts and caches
 	@git fetch --prune
 	@git gc --prune=now --aggressive
 
-format: ## Format code with rustfmt and Lint with clippy
+fmt: ## Format code with rustfmt and Lint with clippy
 	cargo fmt --all
 	cargo clippy --all-targets --all-features
 
