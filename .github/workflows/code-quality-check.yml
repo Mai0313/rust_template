@@ -30,9 +30,6 @@ jobs:
           toolchain: stable
           components: rustfmt, clippy
 
-      - name: Cache cargo
-        uses: Swatinem/rust-cache@v2
-
       - name: rustfmt (check)
         run: |
           cargo fmt --all -- --check

@@ -38,8 +38,7 @@ jobs:
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Build crate package (.crate)
-        run: |
-          make package
+        run: cargo package --locked --allow-dirty
 
       # - name: Publish to crates.io
       #   env:
