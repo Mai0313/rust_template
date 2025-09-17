@@ -41,7 +41,8 @@ jobs:
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Build crate package (.crate)
-        run: make package
+        run: |
+          make package
 
       # - name: Publish to crates.io
       #   if: ${{ contains(github.server_url, 'github') }}

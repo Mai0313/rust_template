@@ -31,49 +31,14 @@ jobs:
       - name: Cache cargo
         uses: Swatinem/rust-cache@v2
 
-      - name: Install cross
-        uses: taiki-e/install-action@v2
-        with:
-          tool: cross
-
       - name: Setup Zig
         uses: mlugg/setup-zig@v1
         with:
           version: 0.12.0
 
-      - name: Install cargo-zigbuild
-        uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-zigbuild
-
-      - name: Build (Linux + Windows GNU + WASM via cross)
+      - name: Build
         run: |
-          set -euxo pipefail
-          TARGETS="\
-            x86_64-unknown-linux-gnu \
-            aarch64-unknown-linux-gnu \
-            i686-unknown-linux-gnu \
-            armv7-unknown-linux-gnueabihf \
-            x86_64-unknown-linux-musl \
-            aarch64-unknown-linux-musl \
-            i686-unknown-linux-musl \
-            armv7-unknown-linux-musleabihf \
-            x86_64-pc-windows-gnu \
-            aarch64-pc-windows-gnu \
-            i686-pc-windows-gnu \
-            wasm32-wasi \
-          "
-          make build-targets CROSS=1 TARGETS="$TARGETS"
-          make dist TARGETS="$TARGETS"
-
-      - name: Build (Apple via cargo-zigbuild)
-        continue-on-error: true
-        run: |
-          set -euxo pipefail
-          TARGETS="x86_64-apple-darwin aarch64-apple-darwin"
-          rustup target add $TARGETS
-          make build-targets-zig TARGETS="$TARGETS"
-          make dist TARGETS="$TARGETS"
+          make release
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4.6.2

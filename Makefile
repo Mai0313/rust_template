@@ -132,10 +132,24 @@ dist-native: ## Package the natively-built binary in dist/
 		tar czf "dist/$(BIN_NAME)-native.tar.gz" -C dist native; \
 	fi
 
-build-all: ## Build all mainstream targets (no Docker) — may require toolchains
+build-all: ## Build and package all mainstream targets (no Docker) — may require toolchains
 	$(MAKE) install-targets TARGETS="$(ALL_TARGETS)"
 	$(MAKE) build-targets TARGETS="$(ALL_TARGETS)" CROSS=0
+	$(MAKE) dist TARGETS="$(ALL_TARGETS)"
 
 cross-all: ## Build all mainstream targets using cross (Linux host recommended)
 	$(MAKE) build-targets TARGETS="$(ALL_TARGETS)" CROSS=1
 	$(MAKE) dist TARGETS="$(ALL_TARGETS)"
+
+release: ## Build and package all targets for release (cross-compilation + Apple via zigbuild)
+	@echo "==> Installing cross-compilation tools..."
+	cargo install cross --git https://github.com/cross-rs/cross || true
+	cargo install cargo-zigbuild || true
+	@echo "==> Building Linux/Windows/WASM targets via cross..."
+	$(MAKE) build-targets CROSS=1 TARGETS="$(LINUX_GNU_TARGETS) $(LINUX_MUSL_TARGETS) $(WINDOWS_GNU_TARGETS) $(WASM_TARGETS)"
+	@echo "==> Building Apple targets via cargo-zigbuild..."
+	rustup target add $(APPLE_TARGETS) || true
+	$(MAKE) build-targets-zig TARGETS="$(APPLE_TARGETS)" || echo "Apple build failed, continuing..."
+	@echo "==> Packaging all built binaries..."
+	$(MAKE) dist TARGETS="$(ALL_TARGETS)"
+	@echo "==> Release build complete! Check dist/ directory."
