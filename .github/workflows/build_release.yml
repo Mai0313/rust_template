@@ -28,14 +28,6 @@ jobs:
         with:
           toolchain: stable
 
-      - name: Cache cargo
-        uses: Swatinem/rust-cache@v2
-
-      - name: Setup Zig
-        uses: mlugg/setup-zig@v1
-        with:
-          version: 0.12.0
-
       - name: Build
         run: |
           make build-release
@@ -50,16 +42,8 @@ jobs:
           compression-level: 6
           overwrite: true
 
-      - name: Upload Release Assets (GitHub)
-        if: ${{ startsWith(github.ref, 'refs/tags/v') && contains(github.server_url, 'github') }}
+      - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            ./target/release/${{ github.event.repository.name }}*
-
-      - name: Upload Release Assets (Gitea)
-        if: ${{ startsWith(github.ref, 'refs/tags/v') && contains(github.server_url, 'gitea') }}
-        uses: akkuman/gitea-release-action@v1
         with:
           files: |
             ./target/release/${{ github.event.repository.name }}*
