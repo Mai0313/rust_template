@@ -5,7 +5,7 @@
 # git push origin rust-v0.1.0
 # ```
 
-name: Build and Release (Rust multi-platform)
+name: Build and Release
 
 on:
   push:
