@@ -71,7 +71,7 @@ jobs:
           targets: ${{ matrix.target }}
 
       - name: Install Build Tools
-        if: contains(matrix.target, 'musl') && startsWith(matrix.runner, 'ubuntu')
+        if: ${{ contains(matrix.target, 'musl') && startsWith(matrix.runner, 'ubuntu') }}
         run: |
           sudo apt install -y musl-tools pkg-config
 
@@ -94,8 +94,8 @@ jobs:
           cp "${bin_dir}/${bin}" "${dest}/${bin}"
 
       - name: Create .zip (Windows)
-        if: startsWith(matrix.runner, 'windows')
         shell: powershell
+        if: ${{ startsWith(matrix.runner, 'windows') }}
         run: |
           $ErrorActionPreference = "Stop"
           $dest = "dist/${{ matrix.target }}"
@@ -106,6 +106,7 @@ jobs:
 
       - name: Create .tar.gz (all platforms)
         shell: bash
+        if: ${{ !startsWith(matrix.runner, 'windows') }}
         run: |
           set -euo pipefail
           dest="dist/${{ matrix.target }}"
