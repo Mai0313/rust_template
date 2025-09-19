@@ -79,6 +79,11 @@ make package       # Create .crate package
 cargo package --locked --allow-dirty
 ```
 
+### Development Workflow
+- **After every edit**: Run `cargo build` to confirm compilation is successful before proceeding
+- **Before committing**: Ensure code passes all quality checks (fmt, clippy, test)
+- **Before pushing**: Run full test suite to catch any integration issues
+
 ## Build and Release Process
 
 ### Local Development Build

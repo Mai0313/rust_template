@@ -100,6 +100,7 @@ GitHub Actions `build_release.yml` 會在建立 `v*` 標籤時針對多平台建
 - PR 標題遵循 Conventional Commits
 - 請保持格式化並通過 clippy 檢查
 
+- 每次編輯完畢後，請執行 `cargo build` 來確認編譯是否成功
 - 在送出 PR 前，請先本機執行：
   - `cargo fmt --all -- --check`
   - `cargo clippy --all-targets --all-features -- -D warnings`

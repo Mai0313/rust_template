@@ -101,6 +101,7 @@ Assets naming:
 - Use Conventional Commits for PR titles
 - Keep code formatted and clippy‑clean
 
+- After every edit, run `cargo build` to confirm compilation is successful
 - Before opening a PR, please run locally:
   - `cargo fmt --all -- --check`
   - `cargo clippy --all-targets --all-features -- -D warnings`
