@@ -32,6 +32,7 @@ Prerequisites: Rust toolchain (`rustup`), Docker (optional)
 make fmt            # rustfmt + clippy
 make test           # cargo test (all targets)
 make test-verbose   # cargo test (all targets with verbose output)
+make coverage       # generate LCOV coverage report
 make build          # cargo build (release mode)
 make build-release  # cargo build --release
 make run            # run the release binary

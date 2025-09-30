@@ -31,6 +31,7 @@
 make fmt            # 格式化 + clippy
 make test           # 测试（所有目标）
 make test-verbose   # 测试（所有目标与详细输出）
+make coverage       # 生成 LCOV 覆盖率报告
 make build          # 构建（release 模式）
 make build-release  # 发布构建（release）
 make run            # 运行（release）

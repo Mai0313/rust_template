@@ -67,6 +67,12 @@ make test-verbose  # Run all tests with verbose output
 cargo test --all
 cargo test --all --verbose
 
+# Test Coverage
+make coverage
+cargo llvm-cov --workspace --lcov --output-path lcov.info
+cargo llvm-cov --workspace --html --output-dir coverage-html
+cargo llvm-cov --workspace
+
 # Building
 make build         # Debug build
 make build-release # Release build

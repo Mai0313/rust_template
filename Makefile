@@ -30,5 +30,9 @@ test: ## Run all tests
 test-verbose: ## Run all tests with verbose output
 	cargo test --all --verbose
 
+coverage: ## Generate test coverage report (requires cargo-llvm-cov)
+	@cargo install cargo-llvm-cov
+	cargo llvm-cov
+
 run: ## Run the application
 	cargo run --release

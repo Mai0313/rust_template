@@ -31,6 +31,7 @@
 make fmt            # 格式化 + clippy
 make test           # 測試（所有目標）
 make test-verbose   # 測試（所有目標與詳細輸出）
+make coverage       # 產生 LCOV 覆蓋率報告
 make build          # 建置（release 模式）
 make build-release  # 發布建置（release 模式）
 make run            # 執行（release 模式）
