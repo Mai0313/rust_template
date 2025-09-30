@@ -62,8 +62,10 @@ cargo fmt --all -- --check
 cargo clippy --all-targets --all-features -- -D warnings
 
 # Testing
-make test          # Run all tests with verbose output
-cargo test --verbose
+make test          # Run all tests
+make test-verbose  # Run all tests with verbose output
+cargo test --all
+cargo test --all --verbose
 
 # Building
 make build         # Debug build

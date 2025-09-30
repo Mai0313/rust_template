@@ -30,7 +30,8 @@ Prerequisites: Rust toolchain (`rustup`), Docker (optional)
 
 ```bash
 make fmt            # rustfmt + clippy
-make test           # cargo test (all targets with verbose output)
+make test           # cargo test (all targets)
+make test-verbose   # cargo test (all targets with verbose output)
 make build          # cargo build (release mode)
 make build-release  # cargo build --release
 make run            # run the release binary

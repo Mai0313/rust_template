@@ -29,7 +29,8 @@
 
 ```bash
 make fmt            # 格式化 + clippy
-make test           # 测试（包含所有目标与详细输出）
+make test           # 测试（所有目标）
+make test-verbose   # 测试（所有目标与详细输出）
 make build          # 构建（release 模式）
 make build-release  # 发布构建（release）
 make run            # 运行（release）

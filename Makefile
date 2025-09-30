@@ -8,8 +8,6 @@ help: # Show this help message
 clean: ## Clean build artifacts and caches
 	@rm -rf target dist tmp .cache
 	@find . -type f -name "*.DS_Store" -ls -delete
-	@cargo install cargo-cache --quiet
-	@cargo cache --autoclean
 	@git fetch --prune
 	@git gc --prune=now --aggressive
 
@@ -27,6 +25,9 @@ package: ## Build crate package (.crate)
 	cargo package --locked --allow-dirty
 
 test: ## Run all tests
+	cargo test --all
+
+test-verbose: ## Run all tests with verbose output
 	cargo test --all --verbose
 
 run: ## Run the application
