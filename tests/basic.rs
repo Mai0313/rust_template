@@ -27,11 +27,11 @@ fn integration_test_complex_calculation() {
     let sum = rust_template::add(a, b);
     let product = rust_template::multiply(a, b);
     let difference = rust_template::subtract(a, b);
-    
+
     assert_eq!(sum, 15);
     assert_eq!(product, 50);
     assert_eq!(difference, 5);
-    
+
     // Test the display function
     let display = rust_template::calculate_and_display(a, b);
     assert_eq!(display, "10 + 5 = 15");
@@ -43,7 +43,7 @@ fn edge_cases_test() {
     assert_eq!(rust_template::add(0, 0), 0);
     assert_eq!(rust_template::multiply(0, 100), 0);
     assert_eq!(rust_template::subtract(0, 0), 0);
-    
+
     // Test negative numbers
     assert_eq!(rust_template::add(-5, -3), -8);
     assert_eq!(rust_template::multiply(-2, 3), -6);

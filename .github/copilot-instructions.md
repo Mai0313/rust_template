@@ -14,6 +14,7 @@ This is a production-ready Rust project template designed to bootstrap new Rust 
 ## Technical Architecture
 
 ### Project Structure
+
 ```
 rust_template/
 ├── src/
@@ -30,6 +31,7 @@ rust_template/
 ```
 
 ### Key Dependencies
+
 - **Runtime**: Standard Rust libraries
 - **Development**: clippy, rustfmt for code quality
 - **CI/CD**: GitHub Actions with comprehensive workflow matrix
@@ -37,6 +39,7 @@ rust_template/
 ## Development Environment Setup
 
 ### Prerequisites
+
 - Rust toolchain (via rustup)
 - Cargo package manager
 - Git
@@ -44,6 +47,7 @@ rust_template/
 - Make (optional, for convenience commands)
 
 ### Installation
+
 ```bash
 # Install Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -55,6 +59,7 @@ cargo build
 ```
 
 ### Development Commands
+
 ```bash
 # Format and lint code
 make fmt           # rustfmt + clippy
@@ -88,6 +93,7 @@ cargo package --locked --allow-dirty
 ```
 
 ### Development Workflow
+
 - **After every edit**: Run `cargo build` to confirm compilation is successful before proceeding
 - **Before committing**: Ensure code passes all quality checks (fmt, clippy, test)
 - **Before pushing**: Run full test suite to catch any integration issues
@@ -95,14 +101,17 @@ cargo package --locked --allow-dirty
 ## Build and Release Process
 
 ### Local Development Build
+
 ```bash
 cargo build --release --locked
 ```
 
 ### Cross-Platform Builds
+
 The CI/CD pipeline supports building for multiple target architectures:
 
 **Supported Targets:**
+
 - `x86_64-unknown-linux-gnu` - Linux x86_64 (glibc)
 - `x86_64-unknown-linux-musl` - Linux x86_64 (musl, static)
 - `aarch64-unknown-linux-gnu` - Linux ARM64 (glibc)
@@ -113,6 +122,7 @@ The CI/CD pipeline supports building for multiple target architectures:
 - `aarch64-pc-windows-msvc` - Windows ARM64
 
 ### Release Process
+
 1. **Create Release Tag**: `git tag -a v1.0.0 -m "Release v1.0.0"`
 2. **Push Tag**: `git push origin v1.0.0`
 3. **CI/CD Triggers**: `build_release.yml` workflow automatically:
@@ -121,6 +131,7 @@ The CI/CD pipeline supports building for multiple target architectures:
    - Uploads assets to GitHub Release
 
 ### Asset Naming Convention
+
 - Unix platforms: `{binary-name}-v{version}-{target}.tar.gz`
 - Windows: `{binary-name}-v{version}-{target}.zip`
 
@@ -129,6 +140,7 @@ Example: `rust_template-v1.0.0-x86_64-unknown-linux-gnu.tar.gz`
 ## CI/CD Workflows
 
 ### Core Workflows
+
 1. **test.yml**: Comprehensive testing with coverage reports
 2. **code-quality-check.yml**: Code formatting and linting validation
 3. **build_package.yml**: Cargo package building and optional crates.io publishing
@@ -136,6 +148,7 @@ Example: `rust_template-v1.0.0-x86_64-unknown-linux-gnu.tar.gz`
 5. **build_release.yml**: Cross-platform binary releases
 
 ### Automation Features
+
 - **Auto-labeling**: PRs labeled based on file changes and branch names
 - **Security scanning**: Multi-layer security analysis (secrets, vulnerabilities, code quality)
 - **Release drafting**: Automated changelog generation
@@ -145,6 +158,7 @@ Example: `rust_template-v1.0.0-x86_64-unknown-linux-gnu.tar.gz`
 ## Code Quality Standards
 
 ### Rust Code Guidelines
+
 - Use `rustfmt` for consistent formatting
 - Enable all clippy warnings as errors (`-D warnings`)
 - Follow Rust API guidelines
@@ -152,7 +166,9 @@ Example: `rust_template-v1.0.0-x86_64-unknown-linux-gnu.tar.gz`
 - Include unit tests for all public functions
 
 ### Commit Conventions
+
 Follow Conventional Commits format:
+
 ```
 <type>[optional scope]: <description>
 
@@ -164,6 +180,7 @@ Follow Conventional Commits format:
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
 ### Pull Request Requirements
+
 - All CI checks must pass
 - Code review required
 - Conventional commit title format
@@ -173,16 +190,19 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 ## Cross-Platform Considerations
 
 ### Binary Naming
+
 - Unix systems: Binary name matches Cargo package name
 - Windows: Binary includes `.exe` extension
 - CI/CD handles platform-specific naming automatically
 
 ### Archive Creation
+
 - **Unix platforms**: `.tar.gz` archives containing the binary
 - **Windows**: `.zip` archives containing the `.exe` file
 - Archives exclude debug symbols and unnecessary files
 
 ### Platform-Specific Dependencies
+
 - Linux MUSL targets require `musl-tools` for static linking
 - macOS builds work on both Intel and Apple Silicon
 - Windows builds use MSVC toolchain
@@ -192,6 +212,7 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 ### Common Build Issues
 
 **MUSL builds failing on Ubuntu:**
+
 ```bash
 sudo apt install -y musl-tools pkg-config
 ```
@@ -203,6 +224,7 @@ Install cross-compilation tools or use zig as linker.
 Ensure CI has appropriate permissions for releases and package publishing.
 
 ### Performance Optimization
+
 - Use release builds for production
 - Enable link-time optimization (LTO) in Cargo.toml for smaller binaries
 - Consider stripping debug symbols for distribution
@@ -210,12 +232,14 @@ Ensure CI has appropriate permissions for releases and package publishing.
 ## Security Considerations
 
 ### CI/CD Security
+
 - Use GitHub's built-in secret scanning
 - Rotate tokens and keys regularly
 - Limit workflow permissions to minimum required
 - Use Dependabot for automated security updates
 
 ### Code Security
+
 - Run clippy with security lints enabled
 - Use safe Rust practices
 - Audit dependencies regularly
@@ -224,6 +248,7 @@ Ensure CI has appropriate permissions for releases and package publishing.
 ## Deployment
 
 ### Docker Deployment
+
 ```bash
 # Build production image
 docker build -f docker/Dockerfile --target prod -t your-app:latest .
@@ -233,6 +258,7 @@ docker run --rm your-app:latest
 ```
 
 ### Binary Distribution
+
 Download platform-specific binaries from GitHub Releases and deploy directly to target systems.
 
 ## Contributing

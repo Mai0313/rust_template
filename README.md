@@ -49,6 +49,7 @@ docker run --rm ghcr.io/<owner>/<repo>:latest
 ```
 
 Or using the actual binary name:
+
 ```bash
 docker build -f docker/Dockerfile --target prod -t rust_template:latest .
 docker run --rm rust_template:latest
@@ -72,18 +73,21 @@ This template does not ship cross-compile tooling by default. If you need cross 
 GitHub Actions `build_release.yml` builds multi-platform release binaries on tags matching `v*` and uploads them to the GitHub Release assets.
 
 Targets:
+
 - x86_64-unknown-linux-gnu, x86_64-unknown-linux-musl
 - aarch64-unknown-linux-gnu, aarch64-unknown-linux-musl
 - x86_64-apple-darwin, aarch64-apple-darwin
 - x86_64-pc-windows-msvc, aarch64-pc-windows-msvc
 
 Assets naming:
+
 - `<bin>-v<version>-<target>.tar.gz` (all platforms)
 - `<bin>-v<version>-<target>.zip` (Windows additionally)
 
 ## 🔁 CI/CD Workflows
 
 ### Main Workflows
+
 - Tests (`test.yml`): cargo build/test + generate LCOV coverage report and upload artifact
 - Code Quality (`code-quality-check.yml`): rustfmt check + clippy (deny warnings)
 - Build Package (`build_package.yml`): package on tag `v*`, optional crates.io publish
@@ -91,6 +95,7 @@ Assets naming:
 - Build Release (`build_release.yml`): Linux release binaries uploaded on tags `v*`
 
 ### Additional Automation
+
 - Auto Labeler (`auto_labeler.yml`): automatically label PRs based on branch names and file changes
 - Code Scan (`code_scan.yml`): multi-layer security scanning (GitLeaks, Trufflehog secret scanning, CodeQL code analysis, Trivy vulnerability scanning)
 - Release Drafter (`release_drafter.yml`): auto-generate release notes
@@ -100,11 +105,15 @@ Assets naming:
 ## 🤝 Contributing
 
 - Open issues/PRs
+
 - Use Conventional Commits for PR titles
+
 - Keep code formatted and clippy‑clean
 
 - After every edit, run `cargo build` to confirm compilation is successful
+
 - Before opening a PR, please run locally:
+
   - `cargo fmt --all -- --check`
   - `cargo clippy --all-targets --all-features -- -D warnings`
   - `cargo test`

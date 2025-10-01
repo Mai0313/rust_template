@@ -48,6 +48,7 @@ docker run --rm ghcr.io/<owner>/<repo>:latest
 ```
 
 或使用實際的二進位名稱：
+
 ```bash
 docker build -f docker/Dockerfile --target prod -t rust_template:latest .
 docker run --rm rust_template:latest
@@ -71,18 +72,21 @@ CI 會在建立 `v*` 標籤時自動打包並上傳 `.crate` 產物。若需自�
 GitHub Actions `build_release.yml` 會在建立 `v*` 標籤時針對多平台建置釋出二進位，並上傳至 GitHub Release。
 
 目標平台（targets）：
+
 - x86_64-unknown-linux-gnu、x86_64-unknown-linux-musl
 - aarch64-unknown-linux-gnu、aarch64-unknown-linux-musl
 - x86_64-apple-darwin、aarch64-apple-darwin
 - x86_64-pc-windows-msvc、aarch64-pc-windows-msvc
 
 資產命名（assets）：
+
 - `<bin>-v<version>-<target>.tar.gz`（所有平台）
 - `<bin>-v<version>-<target>.zip`（Windows 另附）
 
 ## 🔁 CI/CD
 
 ### 主要工作流程
+
 - 測試（`test.yml`）：建置與測試，生成 LCOV 格式覆蓋率報告並上傳 artifact
 - 品質（`code-quality-check.yml`）：rustfmt 檢查 + clippy（拒絕警告）
 - 打包（`build_package.yml`）：標籤 `v*` 觸發打包，可選 crates.io 發佈
@@ -90,6 +94,7 @@ GitHub Actions `build_release.yml` 會在建立 `v*` 標籤時針對多平台建
 - 發佈建置（`build_release.yml`）：標籤 `v*` 時建置 Linux 釋出二進位並上傳
 
 ### 其他自動化功能
+
 - 自動標籤（`auto_labeler.yml`）：根據分支名稱與檔案變更自動為 PR 添加標籤
 - 程式碼掃描（`code_scan.yml`）：多層次安全性掃描（GitLeaks、Trufflehog 祕密掃描、CodeQL 程式碼分析、Trivy 漏洞掃描）
 - 發佈草稿（`release_drafter.yml`）：自動生成 release notes
@@ -99,11 +104,15 @@ GitHub Actions `build_release.yml` 會在建立 `v*` 標籤時針對多平台建
 ## 🤝 貢獻
 
 - 歡迎 Issue/PR
+
 - PR 標題遵循 Conventional Commits
+
 - 請保持格式化並通過 clippy 檢查
 
 - 每次編輯完畢後，請執行 `cargo build` 來確認編譯是否成功
+
 - 在送出 PR 前，請先本機執行：
+
   - `cargo fmt --all -- --check`
   - `cargo clippy --all-targets --all-features -- -D warnings`
   - `cargo test`
@@ -111,5 +120,3 @@ GitHub Actions `build_release.yml` 會在建立 `v*` 標籤時針對多平台建
 ## 📄 授權
 
 MIT — 詳見 `LICENSE`。
-
-
