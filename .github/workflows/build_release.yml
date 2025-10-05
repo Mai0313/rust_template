@@ -151,11 +151,19 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
-          registry-url: https://registry.npmjs.org
 
       - name: Update npm
         run: |
           npm update -g
+
+      - name: Configure npm authentication
+        working-directory: cli
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+        run: |
+          cat > .npmrc << EOF
+          //registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}
+          EOF
 
       - name: Extract version from tag
         id: version
