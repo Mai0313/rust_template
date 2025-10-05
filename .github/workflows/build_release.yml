@@ -1,4 +1,4 @@
-# Release workflow for rust-template.
+# Release workflow for ${{ github.event.repository.name }}.
 # To release, follow a workflow like:
 # ```
 # git tag -a rust-v0.1.0 -m "Release 0.1.0"
@@ -63,7 +63,6 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
-
 
       - name: Cargo build (release)
         run: |
