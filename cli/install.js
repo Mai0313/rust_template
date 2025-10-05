@@ -56,7 +56,7 @@ async function downloadFile(url, dest) {
 
     const file = fs.createWriteStream(dest);
     https.get(url, {
-      headers: { 'User-Agent': 'rust-template-npm-installer' }
+      headers: { 'User-Agent': 'rust_template-npm-installer' }
     }, (response) => {
       if (response.statusCode === 302 || response.statusCode === 301) {
         // Follow redirect
@@ -116,7 +116,7 @@ async function extractBinary(archivePath, destDir, binaryName) {
 async function install() {
   try {
     const info = getPlatformInfo();
-    console.log(`Installing rust-template v${VERSION} for ${info.friendlyId}...`);
+    console.log(`Installing rust_template v${VERSION} for ${info.friendlyId}...`);
 
     const binDir = path.join(__dirname, 'bin');
     if (!fs.existsSync(binDir)) {

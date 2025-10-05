@@ -10,7 +10,7 @@ const binaryPath = path.join(__dirname, BINARY_NAME);
 // Check if binary exists
 if (!fs.existsSync(binaryPath)) {
   console.error('Error: Binary not found. Please reinstall the package:');
-  console.error('  npm install -g rust-template');
+  console.error('  npm install -g rust_template');
   process.exit(1);
 }
 

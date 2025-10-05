@@ -1,5 +1,5 @@
 {
-  "name": "rust-template",
+  "name": "rust_template",
   "version": "0.1.0",
   "description": "Vibe Coding Tracker - AI coding assistant telemetry/usage parser, aggregate JSONL events into CodeAnalysis results",
   "author": "Wei Lee <mai@mai0313.com>",
@@ -24,7 +24,7 @@
   ],
   "bin": {
     "vct": "bin/vct.js",
-    "rust-template": "bin/vct.js"
+    "rust_template": "bin/vct.js"
   },
   "scripts": {
     "postinstall": "node install.js"
