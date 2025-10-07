@@ -4,13 +4,13 @@
   "description": "Vibe Coding Tracker - AI coding assistant telemetry/usage parser, aggregate JSONL events into CodeAnalysis results",
   "author": "Wei Lee <mai@mai0313.com>",
   "license": "MIT",
-  "homepage": "https://github.com/Mai0313/rust_template",
+  "homepage": "https://github.com/Mai0313/VibeCodingTracker",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Mai0313/rust_template.git"
+    "url": "git+https://github.com/Mai0313/VibeCodingTracker.git"
   },
   "bugs": {
-    "url": "https://github.com/Mai0313/rust_template/issues"
+    "url": "https://github.com/Mai0313/VibeCodingTracker/issues"
   },
   "keywords": [
     "cli",
@@ -19,15 +19,13 @@
     "telemetry",
     "claude",
     "codex",
+    "gemini",
     "usage-tracker",
     "analytics"
   ],
   "bin": {
     "vct": "bin/vct.js",
     "rust_template": "bin/vct.js"
-  },
-  "scripts": {
-    "postinstall": "node install.js"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -43,11 +41,7 @@
   ],
   "files": [
     "bin/",
-    "install.js",
+    "binaries/",
     "README.md"
-  ],
-  "dependencies": {
-    "adm-zip": "^0.5.10",
-    "tar": "^7.4.3"
-  }
+  ]
 }
