@@ -57,6 +57,18 @@ jobs:
           compression-level: 6
           overwrite: true
 
+  release_package:
+    name: Release Package
+    needs: build_package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: target/package
+          merge-multiple: true
+
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
