@@ -151,7 +151,6 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
-          always-auth: true
 
       - name: Update npm
         run: |
