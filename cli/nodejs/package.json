@@ -1,7 +1,7 @@
 {
   "name": "rust_template",
   "version": "0.1.0",
-  "description": "Vibe Coding Tracker - AI coding assistant telemetry/usage parser, aggregate JSONL events into CodeAnalysis results",
+  "description": "A production-ready Rust project template to bootstrap new projects fast. It includes a clean Cargo layout, Docker, and a complete CI/CD suite.",
   "author": "Wei Lee <mai@mai0313.com>",
   "license": "MIT",
   "homepage": "https://github.com/Mai0313/rust_template",
