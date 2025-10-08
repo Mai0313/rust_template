@@ -143,6 +143,7 @@ jobs:
           cargo package --locked --allow-dirty
 
       - name: Publish to crates.io
+        continue-on-error: true
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: |
