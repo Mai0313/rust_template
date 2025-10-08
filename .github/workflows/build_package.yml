@@ -48,7 +48,7 @@ jobs:
       #     cargo publish --allow-dirty
 
       - name: Upload .crate artifact
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v4
         with:
           path: target/package/*.crate
           name: ${{ github.event.repository.name }}
