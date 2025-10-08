@@ -10,16 +10,16 @@ updates:
   - package-ecosystem: cargo
     directory: /
     schedule:
-      interval: weekly
+      interval: daily
 
   # Devcontainers
   - package-ecosystem: devcontainers
-    directory: /
+    directory: /.devcontainer
     schedule:
-      interval: weekly
+      interval: daily
 
   # GitHub Actions
   - package-ecosystem: github-actions
-    directory: /
+    directory: /.github/workflows
     schedule:
-      interval: weekly
+      interval: daily
