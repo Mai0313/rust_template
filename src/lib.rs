@@ -1,3 +1,18 @@
+/// Returns the build version information including git metadata
+pub fn version() -> &'static str {
+    env!("BUILD_VERSION")
+}
+
+/// Returns the Rust version used to build this binary
+pub fn rust_version() -> &'static str {
+    env!("BUILD_RUST_VERSION")
+}
+
+/// Returns the Cargo version used to build this binary
+pub fn cargo_version() -> &'static str {
+    env!("BUILD_CARGO_VERSION")
+}
+
 /// Returns the sum of two integers.
 pub fn add(left: i32, right: i32) -> i32 {
     left + right

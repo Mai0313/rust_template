@@ -25,6 +25,7 @@ Other Languages: [English](README.md) | [繁體中文](README.zh-TW.md) | [简�
 ## ✨ Highlights
 
 - Modern Cargo layout (`src/lib.rs`, `src/main.rs`, `tests/`)
+- Dynamic version information with git metadata (tag, commit hash, build tools)
 - Lint & format with clippy and rustfmt
 - GitHub Actions: tests, quality, package build, Docker publish, release drafter, Rust-aware labeler, secret scans, semantic PR, weekly dependency update
 - Multi-stage Dockerfile producing a minimal runtime image
@@ -32,6 +33,7 @@ Other Languages: [English](README.md) | [繁體中文](README.zh-TW.md) | [简�
 ## 🚀 Quick Start
 
 **Requirements:**
+
 - Rust 1.85 or higher (using Edition 2024)
 - Docker (optional)
 
@@ -49,6 +51,25 @@ make clean          # clean build artifacts and caches
 make package        # build crate package (allow dirty)
 make help           # list targets
 ```
+
+## 📌 Version Information
+
+The binary automatically displays dynamic version information including:
+
+- Git tag version (or `Cargo.toml` version if no tags)
+- Commit count since last tag
+- Short commit hash
+- Dirty working directory indicator
+- Rust and Cargo versions used for building
+
+Example output:
+
+```
+rust_template v0.1.25-2-gf4ae332-dirty
+Built with Rust 1.90.0 and Cargo 1.90.0
+```
+
+This version information is embedded at build time through `build.rs` and automatically updated based on your git state.
 
 ## 🐳 Docker
 

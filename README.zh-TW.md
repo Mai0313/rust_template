@@ -25,6 +25,7 @@
 ## ✨ 重點特色
 
 - 現代 Cargo 結構（`src/lib.rs`、`src/main.rs`、`tests/`）
+- 動態版本資訊，包含 git 詮釋資料（標籤、提交雜湊、建置工具）
 - clippy + rustfmt 品質把關
 - GitHub Actions：測試、品質、打包、Docker 推送、發布草稿、Rust 自動標籤、祕密掃描、語義化 PR、每週依賴更新
 - 多階段 Dockerfile，產出精簡執行映像
@@ -32,6 +33,7 @@
 ## 🚀 快速開始
 
 **系統需求：**
+
 - Rust 1.85 或更高版本（使用 Edition 2024）
 - Docker（可選）
 
@@ -49,6 +51,25 @@ make clean          # 清理建置產物與快取
 make package        # 建立 crate 套件（允許 dirty）
 make help           # 檢視可用目標
 ```
+
+## 📌 版本資訊
+
+執行檔會自動顯示動態版本資訊，包含：
+
+- Git 標籤版本（若無標籤則使用 `Cargo.toml` 版本）
+- 自上次標籤以來的提交數量
+- 簡短提交雜湊值
+- 工作目錄是否有未提交的更改（dirty 標記）
+- 建置時使用的 Rust 與 Cargo 版本
+
+輸出範例：
+
+```
+rust_template v0.1.25-2-gf4ae332-dirty
+Built with Rust 1.90.0 and Cargo 1.90.0
+```
+
+這些版本資訊會在建置時透過 `build.rs` 自動嵌入，並根據你的 git 狀態動態更新。
 
 ## 🐳 Docker
 
