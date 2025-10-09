@@ -10,6 +10,10 @@ readme = "README.md"
 homepage = "https://github.com/Mai0313/rust_template"
 repository = "https://github.com/Mai0313/rust_template"
 
+[[bin]]
+name = "rust_template"
+path = "src/main.rs"
+
 [dependencies]
 
 [profile.release]

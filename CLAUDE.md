@@ -6,6 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a production-ready Rust project template with comprehensive CI/CD, Docker containerization, and cross-platform build support. The project provides both a library (`src/lib.rs`) and binary (`src/main.rs`) with basic arithmetic functions as examples.
 
+### Requirements
+
+- **Rust Version**: 1.85 or higher
+- **Rust Edition**: 2024 ([Rust 2024 Edition Guide](https://doc.rust-lang.org/edition-guide/rust-2024/index.html))
+
 ## Essential Development Commands
 
 ### Building and Running

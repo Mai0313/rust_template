@@ -31,7 +31,11 @@ Other Languages: [English](README.md) | [繁體中文](README.zh-TW.md) | [简�
 
 ## 🚀 Quick Start
 
-Prerequisites: Rust toolchain (`rustup`), Docker (optional)
+**Requirements:**
+- Rust 1.85 or higher (using Edition 2024)
+- Docker (optional)
+
+Install Rust via `rustup` if you haven't already.
 
 ```bash
 make fmt            # rustfmt + clippy
