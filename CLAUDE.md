@@ -6,6 +6,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a production-ready Rust project template with comprehensive CI/CD, Docker containerization, and cross-platform build support. The project provides both a library (`src/lib.rs`) and binary (`src/main.rs`) with basic arithmetic functions as examples.
 
+**Key Features:**
+- Dynamic version information with git metadata tracking
+- Comprehensive CI/CD pipelines for testing, quality checks, and releases
+- Multi-platform binary builds (Linux, macOS, Windows for x86_64 and aarch64)
+- Docker containerization with multi-stage builds
+- Automated dependency updates and security scanning
+
 ### Requirements
 
 - **Rust Version**: 1.85 or higher
@@ -63,9 +70,34 @@ make clean           # Remove build artifacts, caches, and run git gc
 
 ### Code Structure
 
-- **`src/lib.rs`**: Library code with public API functions (`add`, `multiply`, `subtract`, `calculate_and_display`)
-- **`src/main.rs`**: Binary entry point that uses the library; includes unit tests for main functionality
+- **`src/lib.rs`**: Library code with public API functions (`add`, `multiply`, `subtract`, `calculate_and_display`, `version`, `rust_version`, `cargo_version`)
+- **`src/main.rs`**: Binary entry point that uses the library; includes unit tests for main functionality and displays version information on startup
 - **`tests/basic.rs`**: Integration tests that verify library API from external consumer perspective
+- **`build.rs`**: Build script that generates dynamic version information from git metadata and build environment
+
+### Dynamic Version Information
+
+The project includes automatic version tracking through a build-time script (`build.rs`) that:
+
+- Extracts git metadata (tags, commit count, commit hash, working directory status)
+- Captures Rust and Cargo versions used for compilation
+- Embeds this information as compile-time environment variables
+- Provides public API functions in `src/lib.rs` for accessing version data
+
+**Version Format:** `{version}-{commits}-g{hash}-{dirty}`
+
+Example: `0.1.25-2-gf4ae332-dirty`
+- `0.1.25`: Latest git tag (or Cargo.toml version if no tags exist)
+- `2`: Number of commits since the tag
+- `gf4ae332`: Short commit hash (7 chars)
+- `dirty`: Working directory has uncommitted changes
+
+**Available Functions:**
+- `version()` - Returns full version string with git metadata
+- `rust_version()` - Returns Rust compiler version used for build
+- `cargo_version()` - Returns Cargo version used for build
+
+The binary automatically displays this information when executed.
 
 ### Key Configuration
 
