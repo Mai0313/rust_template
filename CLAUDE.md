@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a production-ready Rust project template with comprehensive CI/CD, Docker containerization, and cross-platform build support. The project provides both a library (`src/lib.rs`) and binary (`src/main.rs`) with basic arithmetic functions as examples.
 
 **Key Features:**
+
 - Dynamic version information with git metadata tracking
 - Comprehensive CI/CD pipelines for testing, quality checks, and releases
 - Multi-platform binary builds (Linux, macOS, Windows for x86_64 and aarch64)
@@ -87,12 +88,14 @@ The project includes automatic version tracking through a build-time script (`bu
 **Version Format:** `{version}-{commits}-g{hash}-{dirty}`
 
 Example: `0.1.25-2-gf4ae332-dirty`
+
 - `0.1.25`: Latest git tag (or Cargo.toml version if no tags exist)
 - `2`: Number of commits since the tag
 - `gf4ae332`: Short commit hash (7 chars)
 - `dirty`: Working directory has uncommitted changes
 
 **Available Functions:**
+
 - `version()` - Returns full version string with git metadata
 - `rust_version()` - Returns Rust compiler version used for build
 - `cargo_version()` - Returns Cargo version used for build
