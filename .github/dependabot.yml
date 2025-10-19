@@ -7,19 +7,19 @@
 version: 2
 updates:
   # Cargo (Rust)
-  - package-ecosystem: cargo
-    directory: /
+  - package-ecosystem: "cargo"
+    directory: "/"
     schedule:
-      interval: daily
+      interval: "daily"
 
   # Devcontainers
-  - package-ecosystem: devcontainers
-    directory: /.devcontainer
+  - package-ecosystem: "devcontainers"
+    directory: "/"
     schedule:
-      interval: daily
+      interval: "daily"
 
   # GitHub Actions
-  - package-ecosystem: github-actions
-    directory: /.github/workflows
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: daily
+      interval: "daily"
