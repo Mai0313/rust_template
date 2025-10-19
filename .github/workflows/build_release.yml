@@ -390,7 +390,7 @@ jobs:
         working-directory: cli/python
         run: |
           VERSION="${{ steps.version.outputs.VERSION }}"
-          PACKAGE_NAME="vibe-coding-tracker"
+          PACKAGE_NAME="${{ github.event.repository.name }}"
 
           echo "Waiting for PyPI registry to update..."
           sleep 15
