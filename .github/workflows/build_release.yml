@@ -168,7 +168,7 @@ jobs:
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: dist
           merge-multiple: true
@@ -223,7 +223,7 @@ jobs:
           echo "Publishing version: ${VERSION}"
 
       - name: Download and extract build artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: cli/nodejs/binaries/temp
           merge-multiple: true
@@ -338,7 +338,7 @@ jobs:
           echo "Publishing version: ${VERSION}"
 
       - name: Download and extract build artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: cli/python/src/${{ github.event.repository.name }}/binaries/temp
           merge-multiple: true
