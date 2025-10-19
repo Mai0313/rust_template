@@ -24,8 +24,8 @@
     "analytics"
   ],
   "bin": {
-    "vct": "bin/vct.js",
-    "rust_template": "bin/vct.js"
+    "rt": "bin/start.js",
+    "rust_template": "bin/start.js"
   },
   "engines": {
     "node": ">=18.0.0"
