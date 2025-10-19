@@ -1,4 +1,4 @@
-<center>
+<div align="center" markdown="1">
 
 # Rust Project Template
 
@@ -14,7 +14,7 @@
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray&style=flat-square)](https://github.com/Mai0313/rust_template/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/Mai0313/rust_template/pulls)
 
-</center>
+</div>
 
 🚀 A production‑ready Rust project template to bootstrap new projects fast. It includes a clean Cargo layout, Docker, and a complete CI/CD suite.
 

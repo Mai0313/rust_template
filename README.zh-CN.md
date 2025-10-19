@@ -1,4 +1,4 @@
-<center>
+<div align="center" markdown="1">
 
 # Rust 项目模板
 
@@ -14,7 +14,7 @@
 [![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray&style=flat-square)](https://github.com/Mai0313/rust_template/tree/master?tab=License-1-ov-file)
 [![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/Mai0313/rust_template/pulls)
 
-</center>
+</div>
 
 🚀 帮助 Rust 开发者「快速建立新项目」的模板。内置 Cargo 布局、Docker 与完整 CI/CD 工作流。
 
