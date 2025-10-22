@@ -274,6 +274,8 @@ jobs:
       - name: Copy README for npm
         run: |
           cp README.md cli/nodejs/README.md
+          cp README.zh-CN.md cli/nodejs/README.zh-CN.md
+          cp README.zh-TW.md cli/nodejs/README.zh-TW.md
 
       - name: Publish to npm with provenance
         working-directory: cli/nodejs
@@ -373,6 +375,8 @@ jobs:
       - name: Copy README for PyPI
         run: |
           cp README.md cli/python/README.md
+          cp README.zh-CN.md cli/python/README.zh-CN.md
+          cp README.zh-TW.md cli/python/README.zh-TW.md
 
       - name: Build package
         working-directory: cli/python
