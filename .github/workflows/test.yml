@@ -61,7 +61,7 @@ jobs:
           cargo llvm-cov report
 
       - name: Upload coverage artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: lcov.info
           path: lcov.info
