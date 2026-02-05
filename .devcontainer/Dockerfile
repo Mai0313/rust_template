@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/devcontainers/rust:1-1-bookworm
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 LABEL maintainer="Wei Lee <mai@mai0313.com>" \
     org.label-schema.name="rust_template" \
