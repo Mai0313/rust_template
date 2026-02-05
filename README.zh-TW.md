@@ -35,6 +35,7 @@
 詳細的逐步說明請參閱 [.github/copilot-instructions.md](.github/copilot-instructions.md#using-this-template-for-new-projects)。
 
 **設定後的快速驗證**：
+
 ```bash
 grep -r "rust_template" . --exclude-dir=target --exclude-dir=.git  # 應該只找到少量符合項目
 make fmt && cargo build && cargo test --all  # 驗證一切正常
@@ -162,9 +163,9 @@ GitHub Actions `build_release.yml` 會在建立 `v*` 標籤時針對多平台建
 
 - 在送出 PR 前，請先本機執行：
 
-  - `cargo fmt --all -- --check`
-  - `cargo clippy --all-targets --all-features -- -D warnings`
-  - `cargo test`
+    - `cargo fmt --all -- --check`
+    - `cargo clippy --all-targets --all-features -- -D warnings`
+    - `cargo test`
 
 ## 📄 授權
 

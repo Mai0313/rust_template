@@ -1,7 +1,8 @@
 # Copilot Instructions: rust_template
 
-> **TEMPLATE PROJECT NOTICE**: This is a PROJECT TEMPLATE, not a working application. 
+> **TEMPLATE PROJECT NOTICE**: This is a PROJECT TEMPLATE, not a working application.
 > When helping users with this codebase, ALWAYS check if they intend to:
+>
 > 1. **Use this as a template** → Guide them through the "Using This Template" section below
 > 2. **Modify the template itself** → Follow normal development workflows
 >
@@ -10,6 +11,7 @@
 ## Project Overview
 
 This is a **multi-language distributed Rust project template**. The core is written in Rust but packaged for distribution via:
+
 - **Cargo** (crates.io) - native Rust users
 - **npm** (Node.js) - via CLI wrapper in `cli/nodejs/`
 - **PyPI** (Python) - via CLI wrapper in `cli/python/`
@@ -23,12 +25,14 @@ The CLI wrappers detect platform/architecture at runtime and spawn pre-compiled 
 ### Step 1: Global Find and Replace
 
 Perform a **case-sensitive** find-and-replace across the entire codebase:
+
 - `rust_template` → `your_project_name` (using snake_case)
 - `rust-template` → `your-project-name` (using kebab-case, if found)
 
 ### Step 2: Rename Python Package Directory
 
 Rename the Python source directory:
+
 ```bash
 mv cli/python/src/rust_template cli/python/src/your_project_name
 ```
@@ -38,6 +42,7 @@ mv cli/python/src/rust_template cli/python/src/your_project_name
 Update the following information in **all three package manifests**:
 
 #### [Cargo.toml](../Cargo.toml)
+
 ```toml
 name = "your_project_name"
 authors = ["Your Name <your.email@example.com>"]
@@ -47,6 +52,7 @@ repository = "https://github.com/your_username/your_project_name"
 ```
 
 #### [cli/nodejs/package.json](../cli/nodejs/package.json)
+
 ```json
 {
   "name": "your_project_name",
@@ -66,6 +72,7 @@ repository = "https://github.com/your_username/your_project_name"
 ```
 
 #### [cli/python/pyproject.toml](../cli/python/pyproject.toml)
+
 ```toml
 [project]
 name = "your_project_name"
@@ -84,6 +91,7 @@ your_project_name = "your_project_name:main"
 ### Step 4: Update Docker Labels
 
 #### [docker/Dockerfile](../docker/Dockerfile)
+
 ```dockerfile
 LABEL maintainer="Your Name <your.email@example.com>" \
     org.label-schema.name="your_project_name" \
@@ -91,29 +99,35 @@ LABEL maintainer="Your Name <your.email@example.com>" \
 ```
 
 #### [.devcontainer/Dockerfile](../.devcontainer/Dockerfile)
+
 Same as above.
 
 ### Step 5: Update GitHub Configuration
 
 #### [.github/CODEOWNERS](../.github/CODEOWNERS)
+
 ```
 *       @your_github_username
 ```
 
 #### [.github/workflows/build_release.yml](../.github/workflows/build_release.yml)
+
 If publishing to npm with scoped packages, update lines 199-201:
+
 ```yaml
-scope: "@your_npm_username"
+scope: '@your_npm_username'
 ```
 
 ### Step 6: Update README Files
 
 Update all badge URLs and links in:
+
 - [README.md](../README.md)
 - [README.zh-CN.md](../README.zh-CN.md)
 - [README.zh-TW.md](../README.zh-TW.md)
 
 Replace all instances of:
+
 - `Mai0313/rust_template` → `your_username/your_project_name`
 - `rust_template` → `your_project_name`
 - Template description → Your project description
@@ -121,6 +135,7 @@ Replace all instances of:
 ### Step 7: Optional Customizations
 
 Consider updating based on your needs:
+
 - **CLI command aliases**: Update `bin` keys in package.json and `scripts` keys in pyproject.toml
 - **Keywords**: Update in all three package manifests to reflect your project's focus
 - **License**: Update `LICENSE` file and license field in manifests if not using MIT
@@ -130,6 +145,7 @@ Consider updating based on your needs:
 ### Step 8: Verify Changes
 
 Before committing:
+
 ```bash
 # 1. Verify all renames completed
 grep -r "rust_template" . --exclude-dir=target --exclude-dir=.git
@@ -147,6 +163,7 @@ cat cli/python/src/your_project_name/__init__.py | grep binary
 ### Step 9: Initialize Git Version
 
 Tag your first release to activate build.rs version detection:
+
 ```bash
 git tag v0.1.0
 git push origin v0.1.0
@@ -170,6 +187,7 @@ git push origin v0.1.0
 ### 1. Version Information via build.rs
 
 The project uses a sophisticated **build-time version injection system** in [build.rs](../build.rs):
+
 - Captures git metadata: latest tag, commit count since tag, short commit hash, dirty state
 - Embeds Rust and Cargo versions used for the build
 - Exposes via environment variables: `BUILD_VERSION`, `BUILD_RUST_VERSION`, `BUILD_CARGO_VERSION`
@@ -180,6 +198,7 @@ The project uses a sophisticated **build-time version injection system** in [bui
 ### 2. Multi-Platform Binary Distribution
 
 CLI wrappers ([cli/nodejs/bin/start.js](../cli/nodejs/bin/start.js), [cli/python/src/rust_template/__init__.py](../cli/python/src/rust_template/__init__.py)) follow this pattern:
+
 1. Detect current platform and architecture (`process.platform`/`platform.system()`)
 2. Map to binary subdirectory: `linux-x64-gnu`, `macos-arm64`, `windows-x64`, etc.
 3. Spawn the native binary from `binaries/<platform>/rust_template[.exe]`
@@ -226,6 +245,7 @@ make clean           # Clean all build artifacts and caches
 ### Docker Workflow
 
 The [Dockerfile](../docker/Dockerfile) is a multi-stage build:
+
 1. **builder stage**: Alpine + Rust 1.89, compiles release binary
 2. **prod stage**: Alpine minimal, copies only the binary
 
@@ -238,19 +258,20 @@ docker run --rm rust_template:latest  # Runs the binary as entrypoint
 
 Located in [.github/workflows/](workflows/):
 
-| Workflow | Trigger | Purpose |
-|----------|---------|---------|
-| `test.yml` | PR/push | Build, test, generate LCOV coverage |
-| `code-quality-check.yml` | PR/push | Enforce rustfmt + clippy (deny warnings) |
-| `build_release.yml` | tag `v*` | Cross-compile binaries for 8 platforms, upload to GitHub Release |
-| `build_image.yml` | main/master, tag `v*` | Build and push Docker image to GHCR |
-| `auto_labeler.yml` | PR | Auto-label PRs based on files changed (Rust-aware) |
-| `semantic-pull-request.yml` | PR | Enforce Conventional Commits titles |
-| `code_scan.yml` | schedule | Security: GitLeaks, Trufflehog, CodeQL, Trivy |
-| `release_drafter.yml` | release | Auto-generate release notes |
-| `pre-commit-updater.yml` | weekly | Update pre-commit hooks |
+| Workflow                    | Trigger               | Purpose                                                          |
+| --------------------------- | --------------------- | ---------------------------------------------------------------- |
+| `test.yml`                  | PR/push               | Build, test, generate LCOV coverage                              |
+| `code-quality-check.yml`    | PR/push               | Enforce rustfmt + clippy (deny warnings)                         |
+| `build_release.yml`         | tag `v*`              | Cross-compile binaries for 8 platforms, upload to GitHub Release |
+| `build_image.yml`           | main/master, tag `v*` | Build and push Docker image to GHCR                              |
+| `auto_labeler.yml`          | PR                    | Auto-label PRs based on files changed (Rust-aware)               |
+| `semantic-pull-request.yml` | PR                    | Enforce Conventional Commits titles                              |
+| `code_scan.yml`             | schedule              | Security: GitLeaks, Trufflehog, CodeQL, Trivy                    |
+| `release_drafter.yml`       | release               | Auto-generate release notes                                      |
+| `pre-commit-updater.yml`    | weekly                | Update pre-commit hooks                                          |
 
 **Platform targets** for release builds (8 total):
+
 - Linux: x86_64/aarch64 (gnu and musl)
 - macOS: x86_64/aarch64 (darwin)
 - Windows: x86_64/aarch64 (msvc)
@@ -260,6 +281,7 @@ Located in [.github/workflows/](workflows/):
 ### 1. Cargo Configuration
 
 [Cargo.toml](../Cargo.toml):
+
 - Rust **Edition 2024**, requires **1.85+**
 - Release profile: `lto = "thin"`, `codegen-units = 1`, `strip = "symbols"` (optimized for size/speed)
 - Version is `0.0.0` in Cargo.toml (overridden by git tags via build.rs)
@@ -267,6 +289,7 @@ Located in [.github/workflows/](workflows/):
 ### 2. Testing Standards
 
 From [tests/basic.rs](../tests/basic.rs) and inline tests:
+
 - Integration tests call public library functions: `rust_template::add()`, `rust_template::calculate_and_display()`
 - Test both typical use cases and edge cases (zero, negative numbers)
 - Unit tests use `#[cfg(test)]` modules directly in source files
@@ -274,12 +297,14 @@ From [tests/basic.rs](../tests/basic.rs) and inline tests:
 ### 3. PR Title Format
 
 Must follow [Conventional Commits](https://www.conventionalcommits.org/):
+
 - `feat:`, `fix:`, `docs:`, `chore:`, `test:`, `refactor:`, etc.
 - Semantic PR workflow enforces this automatically
 
 ### 4. Multi-Language Package Metadata
 
 All three package manifests ([Cargo.toml](../Cargo.toml), [cli/nodejs/package.json](../cli/nodejs/package.json), [cli/python/pyproject.toml](../cli/python/pyproject.toml)) share:
+
 - Same description, keywords, author, license, homepage, repository URL
 - **When updating metadata**: Sync across all three files to maintain consistency
 
