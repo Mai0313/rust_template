@@ -22,6 +22,24 @@ Click [Use this template](https://github.com/Mai0313/rust_template/generate) to 
 
 Other Languages: [English](README.md) | [繁體中文](README.zh-TW.md) | [简体中文](README.zh-CN.md)
 
+## 🎯 Using This Template
+
+**IMPORTANT**: This is a template repository. Before using it for your project, you must:
+
+1. **Rename all occurrences** of `rust_template` to your project name across the entire codebase
+2. **Update metadata** in `Cargo.toml`, `cli/nodejs/package.json`, and `cli/python/pyproject.toml`
+3. **Update author information** in all package manifests and Dockerfiles
+4. **Update repository URLs** in README badges, package manifests, and GitHub workflows
+5. **Rename the Python package directory** from `cli/python/src/rust_template` to your project name
+
+For detailed step-by-step instructions, see [.github/copilot-instructions.md](.github/copilot-instructions.md#using-this-template-for-new-projects).
+
+**Quick verification after setup**:
+```bash
+grep -r "rust_template" . --exclude-dir=target --exclude-dir=.git  # Should find minimal matches
+make fmt && cargo build && cargo test --all  # Verify everything works
+```
+
 ## ✨ Highlights
 
 - Modern Cargo layout (`src/lib.rs`, `src/main.rs`, `tests/`)

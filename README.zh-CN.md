@@ -22,6 +22,24 @@
 
 其他语言: [English](README.md) | [繁體中文](README.zh-TW.md) | [简体中文](README.zh-CN.md)
 
+## 🎯 使用此模板
+
+**重要提示**：这是一个模板仓库。在将其用于您的项目之前，您必须：
+
+1. **重命名所有出现的** `rust_template` 为您的项目名称（整个代码库）
+2. **更新元数据**：修改 `Cargo.toml`、`cli/nodejs/package.json` 和 `cli/python/pyproject.toml`
+3. **更新作者信息**：修改所有包清单和 Dockerfile 中的作者信息
+4. **更新仓库 URL**：修改 README 徽章、包清单和 GitHub workflows 中的链接
+5. **重命名 Python 包目录**：将 `cli/python/src/rust_template` 改为您的项目名称
+
+详细的分步说明请参阅 [.github/copilot-instructions.md](.github/copilot-instructions.md#using-this-template-for-new-projects)。
+
+**设置后的快速验证**：
+```bash
+grep -r "rust_template" . --exclude-dir=target --exclude-dir=.git  # 应该只找到少量匹配
+make fmt && cargo build && cargo test --all  # 验证一切正常
+```
+
 ## ✨ 特色
 
 - 现代 Cargo 结构（`src/lib.rs`、`src/main.rs`、`tests/`）
