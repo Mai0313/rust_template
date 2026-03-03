@@ -268,7 +268,8 @@ Located in [.github/workflows/](workflows/):
 | `semantic-pull-request.yml` | PR                    | Enforce Conventional Commits titles                              |
 | `code_scan.yml`             | schedule              | Security: GitLeaks, Trufflehog, CodeQL, Trivy                    |
 | `release_drafter.yml`       | release               | Auto-generate release notes                                      |
-| `pre-commit-updater.yml`    | weekly                | Update pre-commit hooks                                          |
+| `pre-commit-updater.yml`    | daily                 | Update pre-commit hooks                                          |
+| `auto_review_merge.yml`     | PR                    | Dependency review + auto-merge Dependabot PRs                    |
 
 **Platform targets** for release builds (8 total):
 
@@ -301,7 +302,16 @@ Must follow [Conventional Commits](https://www.conventionalcommits.org/):
 - `feat:`, `fix:`, `docs:`, `chore:`, `test:`, `refactor:`, etc.
 - Semantic PR workflow enforces this automatically
 
-### 4. Multi-Language Package Metadata
+### 4. GitHub Actions Formatting Conventions
+
+When editing or creating GitHub Actions workflow files, follow these rules:
+
+- **Do not** include `container` fields or `Setup MTK Certification` steps.
+- **Job attribute order**: `name`, `needs`, `runs-on`, `if` (followed by other attributes such as `strategy`, `steps`, etc.)
+- **Step attribute order**: `name`, `id`, `continue-on-error`, `if`, `uses`, `with`, `env`, `shell`, `run`
+- **Avoid redundant environment variables**: Do not define env vars (e.g., `PR_URL: ${{ github.event.pull_request.html_url }}`) that are only used once in a `run` command. Use the expression directly in the command instead.
+
+### 5. Multi-Language Package Metadata
 
 All three package manifests ([Cargo.toml](../Cargo.toml), [cli/nodejs/package.json](../cli/nodejs/package.json), [cli/python/pyproject.toml](../cli/python/pyproject.toml)) share:
 
