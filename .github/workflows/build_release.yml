@@ -193,11 +193,10 @@ jobs:
       id-token: write
 
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: "${{ github.event.repository.name }}"
-            scope: "@mai0313"
-          - name: rusttemp
             scope: "@mai0313"
           - name: "${{ github.event.repository.name }}"
             scope: ""
