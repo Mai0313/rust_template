@@ -24,12 +24,3 @@ The following are repository infrastructure files that may be updated (CI workfl
 - `./README.zh-TW.md`
 
 You need to keep project-related files, folders, and configurations unchanged, and only update the repository infrastructure files listed above. After checking the above files and folders, please proceed with updating the repository actions, settings, and configurations as needed.
-
-The following files and folders are project-specific and should NOT be modified:
-
-- `./src`
-- `./tests`
-- `./cli`
-- `./build.rs`
-- `./Cargo.toml`
-- `./Cargo.lock`
