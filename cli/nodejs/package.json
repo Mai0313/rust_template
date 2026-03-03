@@ -1,5 +1,5 @@
 {
-  "name": "rust_template",
+  "name": "@mai0313/rusttemp",
   "version": "0.1.0",
   "description": "A production-ready Rust project template to bootstrap new projects fast. It includes a clean Cargo layout, Docker, and a complete CI/CD suite.",
   "author": "Wei Lee <mai@mai0313.com>",
@@ -25,7 +25,7 @@
   ],
   "bin": {
     "rt": "bin/start.js",
-    "rust_template": "bin/start.js"
+    "rusttemp": "bin/start.js"
   },
   "engines": {
     "node": ">=18.0.0"
