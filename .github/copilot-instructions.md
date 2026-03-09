@@ -295,13 +295,33 @@ From [tests/basic.rs](../tests/basic.rs) and inline tests:
 - Test both typical use cases and edge cases (zero, negative numbers)
 - Unit tests use `#[cfg(test)]` modules directly in source files
 
-### 3. Commit Message and PR Title Format
+### 3. Git Conventions
 
-All commit messages and PR titles **must be written in English** and **must follow [Conventional Commits](https://www.conventionalcommits.org/)**:
+#### Commit Messages
 
-- `feat:`, `fix:`, `docs:`, `chore:`, `test:`, `refactor:`, etc.
-- Non-English commit messages or PR titles are not accepted.
-- Semantic PR workflow enforces the Conventional Commits format automatically.
+- **All commit messages must be written in English** — no other languages are accepted.
+- Commit messages must follow the **[Conventional Commits](https://www.conventionalcommits.org/)** specification:
+
+    ```
+    <type>[optional scope]: <description>
+
+    [optional body]
+
+    [optional footer(s)]
+    ```
+
+- Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ci`, `perf`, `revert`
+- Examples:
+    - `feat(cli): add --verbose flag to output detailed logs`
+    - `fix(auth): handle token expiry edge case`
+    - `docs: update README with new installation steps`
+    - `chore: bump pre-commit hook versions`
+
+#### Pull Request Titles
+
+- **All PR titles must be written in English** — no other languages are accepted.
+- PR titles must also follow the **Conventional Commits** format.
+- The PR title becomes the squash-merge commit message, so it must be descriptive and accurate.
 
 ### 4. GitHub Actions Formatting Conventions
 
