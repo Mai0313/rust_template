@@ -295,12 +295,13 @@ From [tests/basic.rs](../tests/basic.rs) and inline tests:
 - Test both typical use cases and edge cases (zero, negative numbers)
 - Unit tests use `#[cfg(test)]` modules directly in source files
 
-### 3. PR Title Format
+### 3. Commit Message and PR Title Format
 
-Must follow [Conventional Commits](https://www.conventionalcommits.org/):
+All commit messages and PR titles **must be written in English** and **must follow [Conventional Commits](https://www.conventionalcommits.org/)**:
 
 - `feat:`, `fix:`, `docs:`, `chore:`, `test:`, `refactor:`, etc.
-- Semantic PR workflow enforces this automatically
+- Non-English commit messages or PR titles are not accepted.
+- Semantic PR workflow enforces the Conventional Commits format automatically.
 
 ### 4. GitHub Actions Formatting Conventions
 
