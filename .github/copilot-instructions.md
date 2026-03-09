@@ -295,12 +295,28 @@ From [tests/basic.rs](../tests/basic.rs) and inline tests:
 - Test both typical use cases and edge cases (zero, negative numbers)
 - Unit tests use `#[cfg(test)]` modules directly in source files
 
-### 3. Git Conventions
+### 3. GitHub Actions Formatting Conventions
 
-#### Commit Messages
+When editing or creating GitHub Actions workflow files, follow these rules:
+
+- **Do not** include `container` fields or `Setup MTK Certification` steps.
+- **Job attribute order**: `name`, `needs`, `runs-on`, `if` (followed by other attributes such as `strategy`, `steps`, etc.)
+- **Step attribute order**: `name`, `id`, `continue-on-error`, `if`, `uses`, `with`, `env`, `shell`, `run`
+- **Avoid redundant environment variables**: Do not define env vars (e.g., `PR_URL: ${{ github.event.pull_request.html_url }}`) that are only used once in a `run` command. Use the expression directly in the command instead.
+
+### 4. Multi-Language Package Metadata
+
+All three package manifests ([Cargo.toml](../Cargo.toml), [cli/nodejs/package.json](../cli/nodejs/package.json), [cli/python/pyproject.toml](../cli/python/pyproject.toml)) share:
+
+- Same description, keywords, author, license, homepage, repository URL
+- **When updating metadata**: Sync across all three files to maintain consistency
+
+## Git Conventions
+
+### Commit Messages
 
 - **All commit messages must be written in English** — no other languages are accepted.
-- Commit messages must follow the **[Conventional Commits](https://www.conventionalcommits.org/)** specification:
+- Commit messages must follow the **Conventional Commits** specification:
 
     ```
     <type>[optional scope]: <description>
@@ -317,27 +333,11 @@ From [tests/basic.rs](../tests/basic.rs) and inline tests:
     - `docs: update README with new installation steps`
     - `chore: bump pre-commit hook versions`
 
-#### Pull Request Titles
+### Pull Request Titles
 
 - **All PR titles must be written in English** — no other languages are accepted.
 - PR titles must also follow the **Conventional Commits** format.
 - The PR title becomes the squash-merge commit message, so it must be descriptive and accurate.
-
-### 4. GitHub Actions Formatting Conventions
-
-When editing or creating GitHub Actions workflow files, follow these rules:
-
-- **Do not** include `container` fields or `Setup MTK Certification` steps.
-- **Job attribute order**: `name`, `needs`, `runs-on`, `if` (followed by other attributes such as `strategy`, `steps`, etc.)
-- **Step attribute order**: `name`, `id`, `continue-on-error`, `if`, `uses`, `with`, `env`, `shell`, `run`
-- **Avoid redundant environment variables**: Do not define env vars (e.g., `PR_URL: ${{ github.event.pull_request.html_url }}`) that are only used once in a `run` command. Use the expression directly in the command instead.
-
-### 5. Multi-Language Package Metadata
-
-All three package manifests ([Cargo.toml](../Cargo.toml), [cli/nodejs/package.json](../cli/nodejs/package.json), [cli/python/pyproject.toml](../cli/python/pyproject.toml)) share:
-
-- Same description, keywords, author, license, homepage, repository URL
-- **When updating metadata**: Sync across all three files to maintain consistency
 
 ## Common Pitfalls
 
