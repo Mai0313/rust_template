@@ -316,6 +316,7 @@ All three package manifests ([Cargo.toml](../Cargo.toml), [cli/nodejs/package.js
 ### Commit Messages
 
 - **All commit messages must be written in English** — no other languages are accepted.
+
 - Commit messages must follow the **Conventional Commits** specification:
 
     ```
@@ -327,7 +328,9 @@ All three package manifests ([Cargo.toml](../Cargo.toml), [cli/nodejs/package.js
     ```
 
 - Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ci`, `perf`, `revert`
+
 - Examples:
+
     - `feat(cli): add --verbose flag to output detailed logs`
     - `fix(auth): handle token expiry edge case`
     - `docs: update README with new installation steps`
