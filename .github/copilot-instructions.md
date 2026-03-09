@@ -219,6 +219,7 @@ CLI wrappers ([cli/nodejs/bin/start.js](../cli/nodejs/bin/start.js), [cli/python
 ### Pre-commit Quality Checks (Run Locally Before PR)
 
 ```bash
+pre-commit run -a     # Run ALL pre-commit hooks (must pass before committing)
 make fmt              # Format + clippy (auto-fix)
 cargo fmt --all -- --check  # Verify formatting (CI enforces this)
 cargo clippy --all-targets --all-features -- -D warnings  # CI fails on warnings
@@ -226,6 +227,8 @@ cargo test --all      # All tests must pass
 ```
 
 CI enforces formatting and clippy warnings-as-errors. **Always run `make fmt` before committing.**
+
+**After every code change, always run `pre-commit run -a` to ensure all hooks pass before committing.**
 
 ### Build and Test Commands
 
@@ -349,6 +352,11 @@ All three package manifests ([Cargo.toml](../Cargo.toml), [cli/nodejs/package.js
 3. **CLI wrappers must stay in sync**: When adding new platforms, update both Node.js and Python wrappers.
 4. **build.rs depends on git state**: Fails gracefully if not in a git repo, but version info won't be accurate.
 5. **Release profile strips symbols**: For debugging release builds, temporarily remove `strip = "symbols"` from Cargo.toml.
+
+## Critical Usage Guidelines
+
+- **After every code change, always run `pre-commit run -a` before committing to ensure all hooks pass.**
+- See the [Git Conventions](#git-conventions) section for commit message and PR title requirements.
 
 ## Key Files Reference
 
