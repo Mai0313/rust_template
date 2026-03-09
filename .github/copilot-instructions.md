@@ -295,14 +295,7 @@ From [tests/basic.rs](../tests/basic.rs) and inline tests:
 - Test both typical use cases and edge cases (zero, negative numbers)
 - Unit tests use `#[cfg(test)]` modules directly in source files
 
-### 3. PR Title Format
-
-Must follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-- `feat:`, `fix:`, `docs:`, `chore:`, `test:`, `refactor:`, etc.
-- Semantic PR workflow enforces this automatically
-
-### 4. GitHub Actions Formatting Conventions
+### 3. GitHub Actions Formatting Conventions
 
 When editing or creating GitHub Actions workflow files, follow these rules:
 
@@ -311,12 +304,43 @@ When editing or creating GitHub Actions workflow files, follow these rules:
 - **Step attribute order**: `name`, `id`, `continue-on-error`, `if`, `uses`, `with`, `env`, `shell`, `run`
 - **Avoid redundant environment variables**: Do not define env vars (e.g., `PR_URL: ${{ github.event.pull_request.html_url }}`) that are only used once in a `run` command. Use the expression directly in the command instead.
 
-### 5. Multi-Language Package Metadata
+### 4. Multi-Language Package Metadata
 
 All three package manifests ([Cargo.toml](../Cargo.toml), [cli/nodejs/package.json](../cli/nodejs/package.json), [cli/python/pyproject.toml](../cli/python/pyproject.toml)) share:
 
 - Same description, keywords, author, license, homepage, repository URL
 - **When updating metadata**: Sync across all three files to maintain consistency
+
+## Git Conventions
+
+### Commit Messages
+
+- **All commit messages must be written in English** — no other languages are accepted.
+
+- Commit messages must follow the **Conventional Commits** specification:
+
+    ```
+    <type>[optional scope]: <description>
+
+    [optional body]
+
+    [optional footer(s)]
+    ```
+
+- Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ci`, `perf`, `revert`
+
+- Examples:
+
+    - `feat(cli): add --verbose flag to output detailed logs`
+    - `fix(auth): handle token expiry edge case`
+    - `docs: update README with new installation steps`
+    - `chore: bump pre-commit hook versions`
+
+### Pull Request Titles
+
+- **All PR titles must be written in English** — no other languages are accepted.
+- PR titles must also follow the **Conventional Commits** format.
+- The PR title becomes the squash-merge commit message, so it must be descriptive and accurate.
 
 ## Common Pitfalls
 
