@@ -1,4 +1,4 @@
-FROM rust:1.89.0-alpine AS builder
+FROM rust:1.95.0-bookworm AS builder
 
 LABEL maintainer="Wei Lee <mai@mai0313.com>" \
     org.label-schema.name="rust_template" \
@@ -12,6 +12,6 @@ RUN cargo build --release --locked
 
 ########################################################################################
 
-FROM alpine:latest AS prod
+FROM ubuntu:24.04 AS prod
 COPY --from=builder /app/target/release/rust_template /usr/local/bin/rust_template
 ENTRYPOINT ["rust_template"]
