@@ -92,10 +92,12 @@ This version information is embedded at build time through `build.rs` and automa
 
 ## 🧪 Testing Layout
 
-This template follows Rust's idiomatic test organization:
+This template follows Rust's idiomatic [test organization](https://doc.rust-lang.org/book/ch11-03-test-organization.html):
 
-- **Unit tests** live next to the code they verify inside `src/` — each module ends with a `#[cfg(test)] mod tests { ... }` block. They can exercise private items. See [src/lib.rs](src/lib.rs).
-- **Integration tests** live in the top-level [tests/](tests/) directory — each file is compiled as a separate crate and may only use the public API, so they exercise the crate the way real consumers would.
+- **Unit tests** live next to the code they verify inside `src/` — [src/lib.rs](src/lib.rs) wraps them in a `#[cfg(test)] mod tests { ... }` block and groups them into one sub-module per tested function (`tests::add`, `tests::multiply`, `tests::version_info`, ...). They can exercise private items.
+- **Integration tests** live in the top-level [tests/](tests/) directory. Each file is compiled as its own crate and may only use the public API, and files are split by topic:
+    - [tests/arithmetic.rs](tests/arithmetic.rs) — cross-function composition and invariants.
+    - [tests/version.rs](tests/version.rs) — build-time version metadata plumbed through `build.rs`.
 
 Run everything with `make test` (or `cargo test --all`).
 

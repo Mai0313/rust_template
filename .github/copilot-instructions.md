@@ -294,8 +294,9 @@ Located in [.github/workflows/](workflows/):
 
 This project follows Rust's idiomatic two-tier test layout:
 
-- **Unit tests** live inside each source file under `src/`, wrapped in `#[cfg(test)] mod tests { ... }`. They can touch private items. Keep them focused on a single function or small unit, and cover edge cases (zero, negatives, large values). See [src/lib.rs](../src/lib.rs).
-- **Integration tests** live in the top-level [tests/](../tests/) directory. Each file is compiled as a separate crate and may **only** use the public API (`rust_template::*`). Use them for cross-function scenarios, build-time version metadata, and behaviors that only make sense end-to-end — not for duplicating unit-test cases. See [tests/basic.rs](../tests/basic.rs).
+- **Unit tests** live inside each source file under `src/`, wrapped in `#[cfg(test)] mod tests { ... }`. They can touch private items. Keep them focused on a single function or small unit, and cover edge cases (zero, negatives, large values). Within the `tests` module, group tests into one sub-module per tested function (e.g., `tests::add`, `tests::multiply`) so the test path encodes what is being tested. See [src/lib.rs](../src/lib.rs).
+- **Integration tests** live in the top-level [tests/](../tests/) directory. Each file is compiled as a separate crate and may **only** use the public API (`rust_template::*`). Name each file after the topic it covers and split by concern — in this template, [tests/arithmetic.rs](../tests/arithmetic.rs) handles cross-function composition and invariants, and [tests/version.rs](../tests/version.rs) handles build-time version metadata. Avoid a generic catch-all file like `basic.rs`, and do not duplicate unit-test cases.
+- **Shared integration-test helpers** belong in `tests/common/mod.rs` (the subdirectory form), not `tests/common.rs`, so Cargo does not treat them as a separate integration crate. See [the Rust Book, ch. 11.3](https://doc.rust-lang.org/book/ch11-03-test-organization.html).
 - **Do not** add a `tests` module to `src/main.rs` — the binary is a thin wrapper; test the underlying library functions in `src/lib.rs` instead.
 
 ### 3. GitHub Actions Formatting Conventions
@@ -367,4 +368,5 @@ All three package manifests ([Cargo.toml](../Cargo.toml), [cli/nodejs/package.js
 - [docker/Dockerfile](../docker/Dockerfile) - Multi-stage Docker build
 - [cli/nodejs/bin/start.js](../cli/nodejs/bin/start.js) - Node.js CLI wrapper
 - [cli/python/src/rust_template/__init__.py](../cli/python/src/rust_template/__init__.py) - Python CLI wrapper
-- [tests/basic.rs](../tests/basic.rs) - Integration tests
+- [tests/arithmetic.rs](../tests/arithmetic.rs) - Integration tests for arithmetic composition and invariants
+- [tests/version.rs](../tests/version.rs) - Integration tests for build-time version metadata

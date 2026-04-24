@@ -1,16 +1,10 @@
-//! Integration tests for rust_template.
+//! Integration tests for the arithmetic surface of `rust_template`.
 //!
-//! These tests exercise the crate through its public API, from a consumer's
-//! perspective. Unit tests of individual functions live alongside the source
-//! in src/lib.rs.
-
-#[test]
-fn version_info_is_populated() {
-    // Build metadata injected by build.rs must be non-empty at runtime.
-    assert!(!rust_template::version().is_empty());
-    assert!(!rust_template::rust_version().is_empty());
-    assert!(!rust_template::cargo_version().is_empty());
-}
+//! Each file under `tests/` is compiled as its own crate and may only call
+//! the public API, so these tests exercise `rust_template` exactly the way a
+//! downstream consumer would. Per-function correctness tests live as unit
+//! tests next to the code in `src/lib.rs`; this file focuses on
+//! cross-function composition and invariants.
 
 #[test]
 fn arithmetic_functions_compose() {
