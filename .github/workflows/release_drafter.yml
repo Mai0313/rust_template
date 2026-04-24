@@ -45,3 +45,4 @@ jobs:
           name: ${{ steps.git-cliff-tag.outputs.content }} 🌈
           body: ${{ steps.git-cliff-changelog.outputs.content }}
           draft: true
+          append_body: true
