@@ -92,10 +92,12 @@ Built with Rust 1.90.0 and Cargo 1.90.0
 
 ## 🧪 測試組織
 
-此模板遵循 Rust 官方慣用的測試組織方式：
+此模板遵循 Rust 官方的[測試組織慣例](https://doc.rust-lang.org/book/ch11-03-test-organization.html)：
 
-- **Unit tests（單元測試）**：放在 `src/` 裡面，跟被測試的程式碼擺在一起 —— 每個模組底部用 `#[cfg(test)] mod tests { ... }` 包起來，可以存取 private items。範例請見 [src/lib.rs](src/lib.rs)。
-- **Integration tests（整合測試）**：放在專案根目錄的 [tests/](tests/) 裡 —— 每個檔案會被編譯成獨立的 crate，只能使用 public API，模擬真實使用者如何呼叫 crate。
+- **Unit tests（單元測試）**：放在 `src/` 裡面，跟被測試的程式碼擺在一起 —— [src/lib.rs](src/lib.rs) 用 `#[cfg(test)] mod tests { ... }` 包起來，並依被測 function 拆成一個個 sub-module（`tests::add`、`tests::multiply`、`tests::version_info` ⋯），可以存取 private items。
+- **Integration tests（整合測試）**：放在專案根目錄的 [tests/](tests/) 裡。每個檔案會被編譯成獨立的 crate，只能使用 public API，並依主題拆檔：
+    - [tests/arithmetic.rs](tests/arithmetic.rs) — cross-function composition 與 invariant 驗證。
+    - [tests/version.rs](tests/version.rs) — `build.rs` 在建置時注入的 version metadata。
 
 執行所有測試：`make test`（或 `cargo test --all`）。
 
