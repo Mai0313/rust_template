@@ -34,90 +34,126 @@ pub fn calculate_and_display(a: i32, b: i32) -> String {
     format!("{a} + {b} = {sum}")
 }
 
+// Unit tests live alongside the code they verify, grouped into one nested
+// module per function. See the Rust Book, ch. 11.3 — "Test Organization":
+// https://doc.rust-lang.org/book/ch11-03-test-organization.html
 #[cfg(test)]
 mod tests {
-    use super::*;
+    mod version_info {
+        use super::super::*;
 
-    #[test]
-    fn adds_two_positive_numbers() {
-        assert_eq!(add(2, 3), 5);
+        #[test]
+        fn version_is_populated() {
+            assert!(!version().is_empty());
+        }
+
+        #[test]
+        fn rust_version_is_populated() {
+            assert!(!rust_version().is_empty());
+        }
+
+        #[test]
+        fn cargo_version_is_populated() {
+            assert!(!cargo_version().is_empty());
+        }
     }
 
-    #[test]
-    fn adds_two_negative_numbers() {
-        assert_eq!(add(-2, -3), -5);
+    mod add {
+        use super::super::*;
+
+        #[test]
+        fn two_positive_numbers() {
+            assert_eq!(add(2, 3), 5);
+        }
+
+        #[test]
+        fn two_negative_numbers() {
+            assert_eq!(add(-2, -3), -5);
+        }
+
+        #[test]
+        fn positive_and_negative() {
+            assert_eq!(add(5, -3), 2);
+            assert_eq!(add(-5, 3), -2);
+        }
+
+        #[test]
+        fn with_zero() {
+            assert_eq!(add(0, 5), 5);
+            assert_eq!(add(5, 0), 5);
+            assert_eq!(add(0, 0), 0);
+        }
+
+        #[test]
+        fn large_numbers() {
+            assert_eq!(add(1_000_000, 2_000_000), 3_000_000);
+        }
     }
 
-    #[test]
-    fn adds_positive_and_negative_numbers() {
-        assert_eq!(add(5, -3), 2);
-        assert_eq!(add(-5, 3), -2);
+    mod multiply {
+        use super::super::*;
+
+        #[test]
+        fn two_numbers() {
+            assert_eq!(multiply(3, 4), 12);
+        }
+
+        #[test]
+        fn with_zero() {
+            assert_eq!(multiply(5, 0), 0);
+            assert_eq!(multiply(0, 5), 0);
+        }
+
+        #[test]
+        fn negative_numbers() {
+            assert_eq!(multiply(-3, 4), -12);
+            assert_eq!(multiply(3, -4), -12);
+            assert_eq!(multiply(-3, -4), 12);
+        }
     }
 
-    #[test]
-    fn adds_with_zero() {
-        assert_eq!(add(0, 5), 5);
-        assert_eq!(add(5, 0), 5);
-        assert_eq!(add(0, 0), 0);
+    mod subtract {
+        use super::super::*;
+
+        #[test]
+        fn two_numbers() {
+            assert_eq!(subtract(5, 3), 2);
+        }
+
+        #[test]
+        fn with_zero() {
+            assert_eq!(subtract(5, 0), 5);
+            assert_eq!(subtract(0, 5), -5);
+        }
+
+        #[test]
+        fn negative_numbers() {
+            assert_eq!(subtract(-5, -3), -2);
+            assert_eq!(subtract(5, -3), 8);
+        }
     }
 
-    #[test]
-    fn adds_large_numbers() {
-        assert_eq!(add(1000000, 2000000), 3000000);
-    }
+    mod calculate_and_display {
+        use super::super::*;
 
-    #[test]
-    fn multiplies_two_numbers() {
-        assert_eq!(multiply(3, 4), 12);
-    }
+        #[test]
+        fn positive_numbers() {
+            assert_eq!(calculate_and_display(2, 3), "2 + 3 = 5");
+        }
 
-    #[test]
-    fn multiplies_with_zero() {
-        assert_eq!(multiply(5, 0), 0);
-        assert_eq!(multiply(0, 5), 0);
-    }
+        #[test]
+        fn larger_numbers() {
+            assert_eq!(calculate_and_display(10, 20), "10 + 20 = 30");
+        }
 
-    #[test]
-    fn multiplies_negative_numbers() {
-        assert_eq!(multiply(-3, 4), -12);
-        assert_eq!(multiply(3, -4), -12);
-        assert_eq!(multiply(-3, -4), 12);
-    }
+        #[test]
+        fn negative_numbers() {
+            assert_eq!(calculate_and_display(-5, 3), "-5 + 3 = -2");
+        }
 
-    #[test]
-    fn subtracts_two_numbers() {
-        assert_eq!(subtract(5, 3), 2);
-    }
-
-    #[test]
-    fn subtracts_with_zero() {
-        assert_eq!(subtract(5, 0), 5);
-        assert_eq!(subtract(0, 5), -5);
-    }
-
-    #[test]
-    fn subtracts_negative_numbers() {
-        assert_eq!(subtract(-5, -3), -2);
-        assert_eq!(subtract(5, -3), 8);
-    }
-
-    #[test]
-    fn formats_positive_numbers() {
-        assert_eq!(calculate_and_display(2, 3), "2 + 3 = 5");
-    }
-
-    #[test]
-    fn formats_larger_numbers() {
-        assert_eq!(calculate_and_display(10, 20), "10 + 20 = 30");
-    }
-
-    #[test]
-    fn formats_negative_numbers() {
-        assert_eq!(calculate_and_display(-5, 3), "-5 + 3 = -2");
-    }
-
-    #[test]
-    fn formats_with_zero() {
-        assert_eq!(calculate_and_display(0, 0), "0 + 0 = 0");
+        #[test]
+        fn with_zero() {
+            assert_eq!(calculate_and_display(0, 0), "0 + 0 = 0");
+        }
     }
 }
