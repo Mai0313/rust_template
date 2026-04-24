@@ -43,7 +43,7 @@ make fmt && cargo build && cargo test --all  # 验证一切正常
 
 ## ✨ 特色
 
-- 现代 Cargo 结构（`src/lib.rs`、`src/main.rs`、`tests/`）
+- 现代 Cargo 结构：unit tests 放在 `src/` 内，integration tests 放在 `tests/`
 - 动态版本信息，包含 git 元数据（标签、提交哈希、构建工具）
 - clippy + rustfmt 质量保障
 - GitHub Actions：测试、质量、打包、Docker 推送、发布草稿、Rust 自动加标签、秘密扫描、语义化 PR、每周依赖更新
@@ -89,6 +89,15 @@ Built with Rust 1.90.0 and Cargo 1.90.0
 ```
 
 这些版本信息会在构建时通过 `build.rs` 自动嵌入，并根据您的 git 状态动态更新。
+
+## 🧪 测试组织
+
+此模板遵循 Rust 官方惯用的测试组织方式：
+
+- **Unit tests（单元测试）**：放在 `src/` 里，与被测代码在一起 —— 每个模块底部用 `#[cfg(test)] mod tests { ... }` 包起来，可访问 private items。示例见 [src/lib.rs](src/lib.rs)。
+- **Integration tests（集成测试）**：放在项目根目录的 [tests/](tests/) 下 —— 每个文件会编译成独立的 crate，只能使用 public API，模拟真实使用者如何调用 crate。
+
+运行所有测试：`make test`（或 `cargo test --all`）。
 
 ## 🐳 Docker
 

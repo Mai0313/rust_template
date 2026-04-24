@@ -43,7 +43,7 @@ make fmt && cargo build && cargo test --all  # Verify everything works
 
 ## ✨ Highlights
 
-- Modern Cargo layout (`src/lib.rs`, `src/main.rs`, `tests/`)
+- Modern Cargo layout with unit tests in `src/` and integration tests in `tests/`
 - Dynamic version information with git metadata (tag, commit hash, build tools)
 - Lint & format with clippy and rustfmt
 - GitHub Actions: tests, quality, package build, Docker publish, release drafter, Rust-aware labeler, secret scans, semantic PR, weekly dependency update
@@ -89,6 +89,15 @@ Built with Rust 1.90.0 and Cargo 1.90.0
 ```
 
 This version information is embedded at build time through `build.rs` and automatically updated based on your git state.
+
+## 🧪 Testing Layout
+
+This template follows Rust's idiomatic test organization:
+
+- **Unit tests** live next to the code they verify inside `src/` — each module ends with a `#[cfg(test)] mod tests { ... }` block. They can exercise private items. See [src/lib.rs](src/lib.rs).
+- **Integration tests** live in the top-level [tests/](tests/) directory — each file is compiled as a separate crate and may only use the public API, so they exercise the crate the way real consumers would.
+
+Run everything with `make test` (or `cargo test --all`).
 
 ## 🐳 Docker
 

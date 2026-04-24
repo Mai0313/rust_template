@@ -100,4 +100,24 @@ mod tests {
         assert_eq!(subtract(-5, -3), -2);
         assert_eq!(subtract(5, -3), 8);
     }
+
+    #[test]
+    fn formats_positive_numbers() {
+        assert_eq!(calculate_and_display(2, 3), "2 + 3 = 5");
+    }
+
+    #[test]
+    fn formats_larger_numbers() {
+        assert_eq!(calculate_and_display(10, 20), "10 + 20 = 30");
+    }
+
+    #[test]
+    fn formats_negative_numbers() {
+        assert_eq!(calculate_and_display(-5, 3), "-5 + 3 = -2");
+    }
+
+    #[test]
+    fn formats_with_zero() {
+        assert_eq!(calculate_and_display(0, 0), "0 + 0 = 0");
+    }
 }

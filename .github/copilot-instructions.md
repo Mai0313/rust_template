@@ -208,9 +208,9 @@ CLI wrappers ([cli/nodejs/bin/start.js](../cli/nodejs/bin/start.js), [cli/python
 
 ### 3. Library vs Binary Organization
 
-- **[src/lib.rs](../src/lib.rs)**: Public API functions, unit tests with `#[cfg(test)]`
-- **[src/main.rs](../src/main.rs)**: Binary entry point, calls library functions
-- **[tests/](../tests/)**: Integration tests that test the public library API
+- **[src/lib.rs](../src/lib.rs)**: Public API functions plus unit tests inside a `#[cfg(test)] mod tests` block at the bottom of the file.
+- **[src/main.rs](../src/main.rs)**: Binary entry point — a thin wrapper over the library. Deliberately has no `tests` module; test business logic in `lib.rs` instead.
+- **[tests/](../tests/)**: Integration tests that use only the public API (`rust_template::*`). Each file becomes its own crate.
 
 **Convention**: All business logic lives in `lib.rs`. The binary is a thin wrapper that calls library functions.
 
@@ -292,11 +292,11 @@ Located in [.github/workflows/](workflows/):
 
 ### 2. Testing Standards
 
-From [tests/basic.rs](../tests/basic.rs) and inline tests:
+This project follows Rust's idiomatic two-tier test layout:
 
-- Integration tests call public library functions: `rust_template::add()`, `rust_template::calculate_and_display()`
-- Test both typical use cases and edge cases (zero, negative numbers)
-- Unit tests use `#[cfg(test)]` modules directly in source files
+- **Unit tests** live inside each source file under `src/`, wrapped in `#[cfg(test)] mod tests { ... }`. They can touch private items. Keep them focused on a single function or small unit, and cover edge cases (zero, negatives, large values). See [src/lib.rs](../src/lib.rs).
+- **Integration tests** live in the top-level [tests/](../tests/) directory. Each file is compiled as a separate crate and may **only** use the public API (`rust_template::*`). Use them for cross-function scenarios, build-time version metadata, and behaviors that only make sense end-to-end — not for duplicating unit-test cases. See [tests/basic.rs](../tests/basic.rs).
+- **Do not** add a `tests` module to `src/main.rs` — the binary is a thin wrapper; test the underlying library functions in `src/lib.rs` instead.
 
 ### 3. GitHub Actions Formatting Conventions
 
