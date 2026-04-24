@@ -26,14 +26,14 @@ jobs:
 
       - name: Generate a tag
         id: git-cliff-tag
-        uses: orhun/git-cliff-action@v4
+        uses: orhun/git-cliff-action@v4.7.1
         with:
           config: ./.github/cliff.toml
           args: --bumped-version
 
       - name: Generate a changelog
         id: git-cliff-changelog
-        uses: orhun/git-cliff-action@v4
+        uses: orhun/git-cliff-action@v4.7.1
         with:
           config: ./.github/cliff.toml
           args: --bump --unreleased
