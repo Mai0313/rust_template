@@ -157,7 +157,7 @@ GitHub Actions `build_release.yml` 会在创建 `v*` 标签时为多平台构建
 ### 其他自动化功能
 
 - 自动标签（`auto_labeler.yml`）：根据分支名称与文件变更自动为 PR 添加标签
-- 代码扫描（`code_scan.yml`）：多层安全性扫描（GitLeaks、Trufflehog 秘密扫描、CodeQL 代码分析、Trivy 漏洞扫描）
+- 代码扫描（`code_scan.yml`）：多层安全性扫描（GitLeaks、Trufflehog 秘密扫描、CodeQL 代码分析）
 - 发布草稿（`release_drafter.yml`）：自动生成 release notes
 - 语义化 PR（`semantic-pull-request.yml`）：检查 PR 标题格式
 - Dependabot 每周依赖更新

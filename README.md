@@ -157,7 +157,7 @@ Assets naming:
 ### Additional Automation
 
 - Auto Labeler (`auto_labeler.yml`): automatically label PRs based on branch names and file changes
-- Code Scan (`code_scan.yml`): multi-layer security scanning (GitLeaks, Trufflehog secret scanning, CodeQL code analysis, Trivy vulnerability scanning)
+- Code Scan (`code_scan.yml`): multi-layer security scanning (GitLeaks, Trufflehog secret scanning, CodeQL code analysis)
 - Release Drafter (`release_drafter.yml`): auto-generate release notes
 - Semantic PR (`semantic-pull-request.yml`): enforce PR title format
 - Dependabot weekly dependency updates

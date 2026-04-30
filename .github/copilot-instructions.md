@@ -269,7 +269,7 @@ Located in [.github/workflows/](workflows/):
 | `build_image.yml`           | main/master, tag `v*` | Build and push Docker image to GHCR                              |
 | `auto_labeler.yml`          | PR                    | Auto-label PRs based on files changed (Rust-aware)               |
 | `semantic-pull-request.yml` | PR                    | Enforce Conventional Commits titles                              |
-| `code_scan.yml`             | schedule              | Security: GitLeaks, Trufflehog, CodeQL, Trivy                    |
+| `code_scan.yml`             | schedule              | Security: GitLeaks, Trufflehog, CodeQL                           |
 | `release_drafter.yml`       | release               | Auto-generate release notes                                      |
 | `pre-commit-updater.yml`    | daily                 | Update pre-commit hooks                                          |
 | `auto_review_merge.yml`     | PR                    | Dependency review + auto-merge Dependabot PRs                    |

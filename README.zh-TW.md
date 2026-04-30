@@ -157,7 +157,7 @@ GitHub Actions `build_release.yml` 會在建立 `v*` 標籤時針對多平台建
 ### 其他自動化功能
 
 - 自動標籤（`auto_labeler.yml`）：根據分支名稱與檔案變更自動為 PR 添加標籤
-- 程式碼掃描（`code_scan.yml`）：多層次安全性掃描（GitLeaks、Trufflehog 祕密掃描、CodeQL 程式碼分析、Trivy 漏洞掃描）
+- 程式碼掃描（`code_scan.yml`）：多層次安全性掃描（GitLeaks、Trufflehog 祕密掃描、CodeQL 程式碼分析）
 - 發佈草稿（`release_drafter.yml`）：自動生成 release notes
 - 語義化 PR（`semantic-pull-request.yml`）：檢查 PR 標題格式
 - Dependabot 每週依賴更新
