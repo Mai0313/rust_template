@@ -12,6 +12,6 @@ RUN cargo build --release --locked
 
 ########################################################################################
 
-FROM ubuntu:24.04 AS prod
+FROM ubuntu:26.04 AS prod
 COPY --from=builder /app/target/release/rust_template /usr/local/bin/rust_template
 ENTRYPOINT ["rust_template"]
