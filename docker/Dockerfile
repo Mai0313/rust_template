@@ -13,7 +13,7 @@ COPY . .
 #   /usr/local/cargo/registry, /usr/local/cargo/git -> avoid re-downloading crates
 #   /app/target                                     -> preserve incremental build artifacts
 # /app/target lives in the cache mount, so we cp the binary out to a real layer path
-# before the cache detaches; the prod stage COPYs from that path.
+# before the cache detaches; the prod stage copies from that path.
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/usr/local/cargo/git \
     --mount=type=cache,target=/app/target \
