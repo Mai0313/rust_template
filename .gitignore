@@ -21,3 +21,7 @@ target
 #.idea/
 
 *.info
+
+/data/
+/docs/
+TODO.md
