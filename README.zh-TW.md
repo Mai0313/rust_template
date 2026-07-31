@@ -32,7 +32,7 @@
 4. **更新儲存庫 URL**：修改 README 徽章、套件清單和 GitHub workflows 中的連結
 5. **重新命名 Python 套件目錄**：將 `cli/python/src/rust_template` 改為您的專案名稱
 
-詳細的逐步說明請參閱 [.github/copilot-instructions.md](.github/copilot-instructions.md#using-this-template-for-new-projects)。
+詳細的逐步說明請參閱 [CLAUDE.md](CLAUDE.md)。
 
 **設定後的快速驗證**：
 

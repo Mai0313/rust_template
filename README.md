@@ -32,7 +32,7 @@ Other Languages: [English](README.md) | [繁體中文](README.zh-TW.md) | [简�
 4. **Update repository URLs** in README badges, package manifests, and GitHub workflows
 5. **Rename the Python package directory** from `cli/python/src/rust_template` to your project name
 
-For detailed step-by-step instructions, see [.github/copilot-instructions.md](.github/copilot-instructions.md#using-this-template-for-new-projects).
+For detailed step-by-step instructions, see [CLAUDE.md](CLAUDE.md).
 
 **Quick verification after setup**:
 

@@ -31,7 +31,7 @@ Repository = "https://github.com/Mai0313/rust_template"
 "Bug Tracker" = "https://github.com/Mai0313/rust_template/issues"
 
 [project.scripts]
-vct = "rust_template:main"
+rt = "rust_template:main"
 rust_template = "rust_template:main"
 
 [build-system]
