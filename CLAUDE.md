@@ -19,7 +19,7 @@ Choose a deliberate value for each identity instead of applying a blind global r
 2. The CLI command is a public interface. Both the npm and Python wrappers currently expose `rt` and `rust_template`. Replace these with the new product command and only the aliases that the project intentionally supports. Do not accidentally retain a template alias as a public command.
 3. An npm package name may use kebab case or a scope. A Python distribution name may differ from its import package, but `cli/python/src/<package>/` and the `[project.scripts]` import target must be valid Python identifiers. After renaming the directory, update the script target and the binary name referenced inside the package.
 4. Update description, authors, license, homepage, repository, issue URL, and keywords together in `Cargo.toml`, `cli/nodejs/package.json`, and `cli/python/pyproject.toml`. The three manifests must describe the same product while following each registry's format.
-5. Update labels in `docker/Dockerfile` and `.devcontainer/Dockerfile`. Update Docker build commands, copy paths, and `ENTRYPOINT` so they point to the new release binary.
+5. Update labels in `docker/Dockerfile`. Update Docker build commands, copy paths, and `ENTRYPOINT` so they point to the new release binary. `.devcontainer/` has no Dockerfile and carries no project identity, so it normally needs no rename.
 6. Regenerate and inspect `Cargo.lock` through `cargo check` or `cargo build`. Do not edit the lockfile directly.
 
 ## Template References That Need Deliberate Treatment
