@@ -49,28 +49,6 @@ make fmt && cargo build && cargo test --all  # 驗證一切正常
 - GitHub Actions：測試、品質、打包、Docker 推送、發布草稿、Rust 自動標籤、祕密掃描、語義化 PR、每週依賴更新
 - 多階段 Dockerfile，產出精簡執行映像
 
-## 🚀 快速開始
-
-**系統需求：**
-
-- Rust 1.85 或更高版本（使用 Edition 2024）
-- Docker（可選）
-
-如尚未安裝 Rust，請使用 `rustup` 進行安裝。
-
-```bash
-make fmt            # 格式化 + clippy
-make test           # 測試（所有目標）
-make test-verbose   # 測試（所有目標與詳細輸出）
-make coverage       # 產生 LCOV 覆蓋率報告
-make build          # 建置（release 模式）
-make build-release  # 發布建置（release 模式）
-make run            # 執行（release 模式）
-make clean          # 清理建置產物與快取
-make package        # 建立 crate 套件（允許 dirty）
-make help           # 檢視可用目標
-```
-
 ## 📌 版本資訊
 
 執行檔會自動顯示動態版本資訊，包含：
@@ -90,17 +68,6 @@ Built with Rust 1.90.0 and Cargo 1.90.0
 
 這些版本資訊會在建置時透過 `build.rs` 自動嵌入，並根據你的 git 狀態動態更新。
 
-## 🧪 測試組織
-
-此模板遵循 Rust 官方的[測試組織慣例](https://doc.rust-lang.org/book/ch11-03-test-organization.html)：
-
-- **Unit tests（單元測試）**：放在 `src/` 裡面，跟被測試的程式碼擺在一起 —— [src/lib.rs](src/lib.rs) 用 `#[cfg(test)] mod tests { ... }` 包起來，並依被測 function 拆成一個個 sub-module（`tests::add`、`tests::multiply`、`tests::version_info` ⋯），可以存取 private items。
-- **Integration tests（整合測試）**：放在專案根目錄的 [tests/](tests/) 裡。每個檔案會被編譯成獨立的 crate，只能使用 public API，並依主題拆檔：
-    - [tests/arithmetic.rs](tests/arithmetic.rs) — cross-function composition 與 invariant 驗證。
-    - [tests/version.rs](tests/version.rs) — `build.rs` 在建置時注入的 version metadata。
-
-執行所有測試：`make test`（或 `cargo test --all`）。
-
 ## 🐳 Docker
 
 ```bash
@@ -115,68 +82,9 @@ docker build -f docker/Dockerfile --target prod -t rust_template:latest .
 docker run --rm rust_template:latest
 ```
 
-## 📦 打包發佈
+## 🛠️ 開發
 
-```bash
-make package        # 建立 crate 套件（允許 dirty）
-# 或直接使用 cargo：
-cargo package --locked --allow-dirty
-# CARGO_REGISTRY_TOKEN=... cargo publish
-```
-
-CI 會在建立 `v*` 標籤時自動打包並上傳 `.crate` 產物。若需自動發佈到 crates.io，請在 `build_package.yml` 開啟發佈步驟並設定密鑰。
-
-## 🧩 跨平台建置
-
-目前模板預設不含本機跨編譯工具。若需在本機使用 cross 或 zig，請依環境安裝與設定。
-
-GitHub Actions `build_release.yml` 會在建立 `v*` 標籤時針對多平台建置釋出二進位，並上傳至 GitHub Release。
-
-目標平台（targets）：
-
-- x86_64-unknown-linux-gnu、x86_64-unknown-linux-musl
-- aarch64-unknown-linux-gnu、aarch64-unknown-linux-musl
-- x86_64-apple-darwin、aarch64-apple-darwin
-- x86_64-pc-windows-msvc、aarch64-pc-windows-msvc
-
-資產命名（assets）：
-
-- `<bin>-v<version>-<target>.tar.gz`（所有平台）
-- `<bin>-v<version>-<target>.zip`（Windows 另附）
-
-## 🔁 CI/CD
-
-### 主要工作流程
-
-- 測試（`test.yml`）：建置與測試，生成 LCOV 格式覆蓋率報告並上傳 artifact
-- 品質（`code-quality-check.yml`）：rustfmt 檢查 + clippy（拒絕警告）
-- 打包（`build_package.yml`）：標籤 `v*` 觸發打包，可選 crates.io 發佈
-- 映像（`build_image.yml`）：在 `main/master` 與標籤 `v*` 推送至 GHCR
-- 發佈建置（`build_release.yml`）：標籤 `v*` 時建置 Linux 釋出二進位並上傳
-
-### 其他自動化功能
-
-- 自動標籤（`auto_labeler.yml`）：根據分支名稱與檔案變更自動為 PR 添加標籤
-- 程式碼掃描（`code_scan.yml`）：多層次安全性掃描（GitLeaks、Trufflehog 祕密掃描、CodeQL 程式碼分析）
-- 發佈草稿（`release_drafter.yml`）：自動生成 release notes
-- 語義化 PR（`semantic-pull-request.yml`）：檢查 PR 標題格式
-- Dependabot 每週依賴更新
-
-## 🤝 貢獻
-
-- 歡迎 Issue/PR
-
-- PR 標題遵循 Conventional Commits
-
-- 請保持格式化並通過 clippy 檢查
-
-- 每次編輯完畢後，請執行 `cargo build` 來確認編譯是否成功
-
-- 在送出 PR 前，請先本機執行：
-
-    - `cargo fmt --all -- --check`
-    - `cargo clippy --all-targets --all-features -- -D warnings`
-    - `cargo test`
+開發環境設定、常用指令、測試、程式碼規範、CI 與發佈流程都在 [CONTRIBUTING.md](./.github/CONTRIBUTING.md)。
 
 ## 📄 授權
 

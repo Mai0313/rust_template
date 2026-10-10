@@ -13,6 +13,7 @@ Thank you for your interest in contributing to this Rust project. This document 
 - [Branching Model](#branching-model)
 - [Commit Convention](#commit-convention)
 - [Pull Request Process](#pull-request-process)
+- [CI and Releases](#ci-and-releases)
 - [Code Review](#code-review)
 - [Coding Standards](#coding-standards)
 - [Security Reports](#security-reports)
@@ -93,8 +94,10 @@ Always run `make fmt` and `make test` before opening a pull request.
 
 ## Testing
 
-- Unit tests live in `#[cfg(test)] mod tests` blocks within source files.
-- Integration tests live under `tests/`.
+The layout follows the Rust Book's [test organization](https://doc.rust-lang.org/book/ch11-03-test-organization.html).
+
+- Unit tests live in `#[cfg(test)] mod tests` blocks within source files, one sub-module per tested function, and can reach private items.
+- Integration tests live under `tests/`, one file per topic. Each file compiles as its own crate and sees only the public API.
 - Documentation tests are encouraged for public APIs.
 - New behavior must be covered by tests. Bug fixes should include a regression test.
 
@@ -159,6 +162,14 @@ Append `!` after the type or include `BREAKING CHANGE:` in the footer to indicat
 
 Pull requests are typically merged via **squash merge** to keep history linear.
 
+## CI and Releases
+
+Workflows live in `.github/workflows/`, and each file states its own triggers.
+
+To release, push a `v*` tag. `build_release.yml` builds the binaries on GitHub-hosted macOS, Linux and Windows runners, attaches them and the `.crate` to a GitHub Release, and publishes to crates.io, npm and PyPI; the workflow lists the targets and asset names. Publishing to crates.io needs the `CARGO_REGISTRY_TOKEN` secret; without it only that step fails. PyPI reads the `UV_PUBLISH_TOKEN` secret, and npm uses trusted publishing, so each npm package name needs a trusted publisher on npmjs.com.
+
+`Cargo.toml` stays at version `0.0.0`. The workflow writes the tag's version before packaging, so publish through a tag rather than a local `cargo publish`. Local builds have no cross-compilation tooling set up.
+
 ## Code Review
 
 - Address all review comments or explain why a change is not needed.
@@ -172,7 +183,7 @@ Pull requests are typically merged via **squash merge** to keep history linear.
 - **Documentation**: every public item should carry a `///` doc comment with examples where appropriate
 - **Errors**: prefer `Result<T, E>` and concrete error types (`thiserror`, `anyhow`); avoid `unwrap()` / `expect()` in library code
 - **Unsafe**: any `unsafe` block must be accompanied by a `// SAFETY:` comment justifying the invariants
-- **MSRV**: do not raise the minimum supported Rust version without discussion
+- **MSRV**: do not raise the minimum supported Rust version (`rust-version` in `Cargo.toml`) without discussion
 
 Prefer clarity over cleverness, and avoid unrelated refactors in feature or fix pull requests.
 

@@ -49,28 +49,6 @@ make fmt && cargo build && cargo test --all  # Verify everything works
 - GitHub Actions: tests, quality, package build, Docker publish, release drafter, Rust-aware labeler, secret scans, semantic PR, weekly dependency update
 - Multi-stage Dockerfile producing a minimal runtime image
 
-## 🚀 Quick Start
-
-**Requirements:**
-
-- Rust 1.85 or higher (using Edition 2024)
-- Docker (optional)
-
-Install Rust via `rustup` if you haven't already.
-
-```bash
-make fmt            # rustfmt + clippy
-make test           # cargo test (all targets)
-make test-verbose   # cargo test (all targets with verbose output)
-make coverage       # generate LCOV coverage report
-make build          # cargo build (release mode)
-make build-release  # cargo build --release
-make run            # run the release binary
-make clean          # clean build artifacts and caches
-make package        # build crate package (allow dirty)
-make help           # list targets
-```
-
 ## 📌 Version Information
 
 The binary automatically displays dynamic version information including:
@@ -90,17 +68,6 @@ Built with Rust 1.90.0 and Cargo 1.90.0
 
 This version information is embedded at build time through `build.rs` and automatically updated based on your git state.
 
-## 🧪 Testing Layout
-
-This template follows Rust's idiomatic [test organization](https://doc.rust-lang.org/book/ch11-03-test-organization.html):
-
-- **Unit tests** live next to the code they verify inside `src/` — [src/lib.rs](src/lib.rs) wraps them in a `#[cfg(test)] mod tests { ... }` block and groups them into one sub-module per tested function (`tests::add`, `tests::multiply`, `tests::version_info`, ...). They can exercise private items.
-- **Integration tests** live in the top-level [tests/](tests/) directory. Each file is compiled as its own crate and may only use the public API, and files are split by topic:
-    - [tests/arithmetic.rs](tests/arithmetic.rs) — cross-function composition and invariants.
-    - [tests/version.rs](tests/version.rs) — build-time version metadata plumbed through `build.rs`.
-
-Run everything with `make test` (or `cargo test --all`).
-
 ## 🐳 Docker
 
 ```bash
@@ -115,68 +82,9 @@ docker build -f docker/Dockerfile --target prod -t rust_template:latest .
 docker run --rm rust_template:latest
 ```
 
-## 📦 Packaging
+## 🛠️ Development
 
-```bash
-make package        # build crate package (allow dirty)
-# or use cargo directly:
-cargo package --locked --allow-dirty
-# CARGO_REGISTRY_TOKEN=... cargo publish
-```
-
-CI builds run automatically on tags matching `v*` and upload the `.crate` file. Uncomment the publish step in `build_package.yml` to automate crates.io releases.
-
-## 🧩 Cross Builds
-
-This template does not ship cross-compile tooling by default. If you need cross or zig-based builds locally, install and configure them per your environment.
-
-GitHub Actions `build_release.yml` builds multi-platform release binaries on tags matching `v*` and uploads them to the GitHub Release assets.
-
-Targets:
-
-- x86_64-unknown-linux-gnu, x86_64-unknown-linux-musl
-- aarch64-unknown-linux-gnu, aarch64-unknown-linux-musl
-- x86_64-apple-darwin, aarch64-apple-darwin
-- x86_64-pc-windows-msvc, aarch64-pc-windows-msvc
-
-Assets naming:
-
-- `<bin>-v<version>-<target>.tar.gz` (all platforms)
-- `<bin>-v<version>-<target>.zip` (Windows additionally)
-
-## 🔁 CI/CD Workflows
-
-### Main Workflows
-
-- Tests (`test.yml`): cargo build/test + generate LCOV coverage report and upload artifact
-- Code Quality (`code-quality-check.yml`): rustfmt check + clippy (deny warnings)
-- Build Package (`build_package.yml`): package on tag `v*`, optional crates.io publish
-- Publish Docker Image (`build_image.yml`): push to GHCR on `main/master` and tags `v*`
-- Build Release (`build_release.yml`): Linux release binaries uploaded on tags `v*`
-
-### Additional Automation
-
-- Auto Labeler (`auto_labeler.yml`): automatically label PRs based on branch names and file changes
-- Code Scan (`code_scan.yml`): multi-layer security scanning (GitLeaks, Trufflehog secret scanning, CodeQL code analysis)
-- Release Drafter (`release_drafter.yml`): auto-generate release notes
-- Semantic PR (`semantic-pull-request.yml`): enforce PR title format
-- Dependabot weekly dependency updates
-
-## 🤝 Contributing
-
-- Open issues/PRs
-
-- Use Conventional Commits for PR titles
-
-- Keep code formatted and clippy‑clean
-
-- After every edit, run `cargo build` to confirm compilation is successful
-
-- Before opening a PR, please run locally:
-
-    - `cargo fmt --all -- --check`
-    - `cargo clippy --all-targets --all-features -- -D warnings`
-    - `cargo test`
+Contributor setup, commands, tests, code conventions, CI and releases live in [CONTRIBUTING.md](./.github/CONTRIBUTING.md).
 
 ## 📄 License
 
