@@ -46,7 +46,7 @@ make fmt && cargo build && cargo test --all  # 验证一切正常
 - 现代 Cargo 结构：unit tests 放在 `src/` 内，integration tests 放在 `tests/`
 - 动态版本信息，包含 git 元数据（标签、提交哈希、构建工具）
 - clippy + rustfmt 质量保障
-- GitHub Actions：测试、质量、打包、Docker 推送、发布草稿、Rust 自动加标签、秘密扫描、语义化 PR、每周依赖更新
+- GitHub Actions：测试、质量、打包、Docker 推送、发布草稿、Rust 自动加标签、秘密扫描、语义化 PR、每日依赖更新
 - 多阶段 Dockerfile，产出精简运行镜像
 
 ## 📌 版本信息

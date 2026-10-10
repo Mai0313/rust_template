@@ -189,7 +189,7 @@ Prefer clarity over cleverness, and avoid unrelated refactors in feature or fix 
 
 ## Security Reports
 
-Please **do not** report security vulnerabilities through public issues. Refer to [`SECURITY.md`](./SECURITY.md) for the responsible disclosure process.
+Please **do not** report security vulnerabilities through public issues. Refer to the [security policy](https://github.com/Mai0313/rust_template/security/policy) for the responsible disclosure process.
 
 ## Licensing
 

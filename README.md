@@ -46,7 +46,7 @@ make fmt && cargo build && cargo test --all  # Verify everything works
 - Modern Cargo layout with unit tests in `src/` and integration tests in `tests/`
 - Dynamic version information with git metadata (tag, commit hash, build tools)
 - Lint & format with clippy and rustfmt
-- GitHub Actions: tests, quality, package build, Docker publish, release drafter, Rust-aware labeler, secret scans, semantic PR, weekly dependency update
+- GitHub Actions: tests, quality, package build, Docker publish, release drafter, Rust-aware labeler, secret scans, semantic PR, daily dependency update
 - Multi-stage Dockerfile producing a minimal runtime image
 
 ## 📌 Version Information
