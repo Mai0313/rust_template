@@ -67,7 +67,7 @@ cargo clippy --all-targets --all-features -- -D warnings
 cargo test --all
 cargo build --locked
 cargo package --locked --allow-dirty
-rg -n -i --hidden -g '!.git/**' -g '!target/**' -g '!CLAUDE.md' 'rust_template|Mai0313|mai0313\.com|copilot-instructions' .
+rg -n -i --hidden -g '!.git/**' -g '!target/**' -g '!AGENTS.md' 'rust_template|Mai0313|mai0313\.com|copilot-instructions' .
 ```
 
 The final search should return only intentional historical or template references. Account for every retained result. If npm or PyPI publication remains in scope, build each wrapper package, verify that `binaries/` contains the expected assets, and on available Linux, macOS, or Windows environments verify that the target CLI starts, forwards arguments, and preserves its exit code.
